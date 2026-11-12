@@ -1,0 +1,25 @@
+---
+// Borító. Ha a forrásban nincs kép: tipográfiai helykitöltő (cím + szerző), nem kitalált kép.
+import type { Book } from '../lib/data';
+interface Props { book: Book; size?: 'thumb' | 'full'; eager?: boolean; sizes?: string }
+const { book, size = 'thumb', eager = false, sizes = '(min-width: 900px) 200px, 45vw' } = Astro.props;
+const c = book.cover;
+const w = size === 'thumb' ? 360 : (c?.w ?? 900);
+const h = c?.w && c?.h ? Math.round((c.h / c.w) * w) : Math.round(w * 1.5);
+---
+{c ? (
+  <img class="cover" src={size === 'thumb' ? c.thumb : c.src} srcset={size === 'full' ? `${c.thumb} 360w, ${c.src} 900w` : undefined}
+       sizes={size === 'full' ? sizes : undefined} width={w} height={h} alt={book.altText}
+       loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+) : (
+  <div class="cover cover--empty" role="img" aria-label={book.altText.replace(' – borító', ' – borító nem érhető el')}>
+    <span class="cover__t">{book.title}</span>
+    {book.authors[0] && <span class="cover__a">{book.authors[0].name}</span>}
+  </div>
+)}
+<style>
+  .cover { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; background: var(--c-shade); box-shadow: var(--shadow-cover); border-radius: 1px; }
+  .cover--empty { display: flex; flex-direction: column; justify-content: space-between; padding: 12%; background: var(--c-sheet); border: 1px solid var(--c-margin); box-shadow: none; }
+  .cover__t { font: 500 1.05rem/1.15 var(--f-serif); }
+  .cover__a { font: 500 0.75rem/1.2 var(--f-sans); color: var(--c-graphite); }
+</style>

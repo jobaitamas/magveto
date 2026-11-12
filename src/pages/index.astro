@@ -1,0 +1,206 @@
+---
+// Kezdőlap (IA 4.1). Csak a mostani kezdőlap valós blokkjai, ismétlés és automatikus léptetés nélkül.
+import Base from '../layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import Cover from '../components/Cover.astro';
+import { home, press, bookById } from '../lib/data';
+import { excerpt, huDate, monthName, price } from '../lib/text';
+
+const [lead, ...rest] = home.featured;
+const latestPress = press.slice(0, 3);
+const ytId = home.video?.src.match(/embed\/([\w-]+)/)?.[1];
+---
+<Base>
+  <h1 class="sr-only">Magvető Kiadó</h1>
+
+  {lead && (
+    <section class="wrap hero" aria-labelledby="kiemelt">
+      <h2 id="kiemelt" class="eyebrow hero__label">Kiemelt</h2>
+      <div class="hero__grid">
+        <article class="hero__lead">
+          <a class="hero__cover" href={`/konyvek/${lead.slug}`} tabindex="-1" aria-hidden="true"><Cover book={lead} size="full" eager sizes="(min-width: 900px) 300px, 60vw" /></a>
+          <div class="hero__text">
+            {lead.authors.length > 0 && (
+              <p class="hero__author">{lead.authors.map((a, i) => <>{i > 0 && ', '}{a.slug ? <a href={`/szerzok/${a.slug}`}>{a.name}</a> : a.name}</>)}</p>
+            )}
+            <h3 class="hero__title"><a href={`/konyvek/${lead.slug}`}>{lead.title}</a></h3>
+            {lead.subtitle && <p class="hero__sub">{lead.subtitle}</p>}
+            {lead.description[0] && <p class="hero__teaser">{excerpt(lead.description.join(' '), 260)}</p>}
+            <a class="btn" href={`/konyvek/${lead.slug}`}>A könyvről</a>
+          </div>
+        </article>
+        <ul class="hero__rest" role="list">
+          {rest.map((b) => <li><BookCard book={b} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="wrap sec" aria-labelledby="ujdonsagok">
+    <div class="sec__head"><h2 id="ujdonsagok">Újdonságok</h2><a class="sec__more" href="/kiadvanyok">Összes kiadvány →</a></div>
+    <ul class="grid-books" role="list">{home.newest.slice(0, 6).map((b) => <li><BookCard book={b} showPrice /></li>)}</ul>
+  </section>
+
+  <div class="wrap twocol">
+    {home.forthcoming.length > 0 && (
+      <section class="sec" aria-labelledby="elo">
+        <div class="sec__head"><h2 id="elo">Előkészületben</h2></div>
+        <ul class="fc" role="list">
+          {home.forthcoming.map((b) => (
+            <li class="fc__item">
+              <a href={`/konyvek/${b.slug}`} class="fc__cov" tabindex="-1" aria-hidden="true"><Cover book={b} /></a>
+              <div>
+                <p class="fc__a">{b.authors.map((a) => a.name).join(', ')}</p>
+                <h3 class="fc__t"><a href={`/konyvek/${b.slug}`}>{b.title}</a></h3>
+                <dl class="facts">
+                  {b.expected && <><dt>Várható megjelenés</dt><dd>{huDate(b.expected)}</dd></>}
+                  {b.plannedPrice && <><dt>Tervezett ár</dt><dd>{price(b.plannedPrice)}</dd></>}
+                  {b.plannedPages && <><dt>Tervezett oldalszám</dt><dd>{b.plannedPages}</dd></>}
+                </dl>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    {home.toplist.length > 0 && (
+      <section class="sec" aria-labelledby="toplista">
+        <div class="sec__head"><h2 id="toplista">Toplista</h2></div>
+        <ol class="top">
+          {home.toplist.map((t) => (
+            <li>
+              <span class="top__n" aria-hidden="true">{t.rank}</span>
+              <span>
+                {t.book ? <a class="top__t" href={`/konyvek/${t.book.slug}`}>{t.book.title}</a> : <span class="top__t">{t.title}</span>}
+                <span class="top__a">{t.authorRef ? t.authorRef.name : t.author}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+  </div>
+
+  <div class="wrap twocol">
+    <section class="sec" aria-labelledby="esemenyek">
+      <div class="sec__head"><h2 id="esemenyek">Események</h2></div>
+      {home.events.length ? (
+        <ul class="ev" role="list">
+          {home.events.map((e) => (
+            <li class="ev__item">
+              <time class="ev__date" datetime={e.date.toISOString().slice(0, 10)}>
+                <span class="ev__day">{e.date.getDate()}</span><span class="ev__mon">{monthName(e.date.getMonth() + 1).slice(0, 3)}.</span>
+              </time>
+              <div><p class="ev__time">{e.time}</p><a class="ev__t ext" href={e.url} rel="noopener">{e.title}</a></div>
+            </li>
+          ))}
+        </ul>
+      ) : <p class="meta">Jelenleg nincs meghirdetett esemény.</p>}
+    </section>
+    <section class="sec" aria-labelledby="sajto">
+      <div class="sec__head"><h2 id="sajto">Sajtóvisszhang</h2><a class="sec__more" href="/sajtoszoba">Sajtószoba →</a></div>
+      <ul class="pr" role="list">
+        {latestPress.map((p) => (
+          <li class="pr__item">
+            <p class="pr__meta">{p.source} · {huDate(p.date)}</p>
+            <h3 class="pr__t"><a href={`/sajtoszoba/${p.slug}`}>{p.title}</a></h3>
+            {p.bookId && <p class="pr__b">{bookById.get(p.bookId)?.title}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <section class="wrap sec" aria-labelledby="tovabbi">
+    <div class="sec__head"><h2 id="tovabbi">Ajánló</h2></div>
+    <div class="extra">
+      {ytId && (
+        <div class="extra__video">
+          <iframe src={`https://www.youtube-nocookie.com/embed/${ytId}`} title="Videó a Magvető YouTube-csatornájáról" loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      )}
+      <div class="extra__side">
+        {home.banners.length > 0 && (
+          <ul class="ban" role="list" aria-label="A Líra ajánlatai">
+            {home.banners.map((bn) => (
+              <li><a href={bn.href} rel="noopener" class="ban__a"><img src={bn.img} alt="Líra ajánlat – a kampányoldal megnyitása" width="270" height="270" loading="lazy" /></a></li>
+            ))}
+          </ul>
+        )}
+        {home.newsletterUrl && (
+          <div class="nl">
+            <h3 class="nl__t">Hírlevél</h3>
+            <p class="meta">Újdonságok és események a Líra hírlevelében.</p>
+            <a class="btn btn--ghost ext" href={home.newsletterUrl} rel="noopener">Feliratkozás</a>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-top: var(--s-7); }
+  .hero__label { margin-bottom: var(--s-4); }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s-7); align-items: start; }
+  .hero__lead { display: grid; grid-template-columns: minmax(160px, 300px) 1fr; gap: var(--s-6); align-items: start; }
+  .hero__author { font: 500 var(--t-small)/1.3 var(--f-sans); margin: 0 0 var(--s-2); }
+  .hero__author a { text-decoration: none; border-bottom: 1px solid currentColor; }
+  .hero__title { font-size: var(--t-h1); line-height: 1.04; }
+  .hero__title a { text-decoration: none; }
+  .hero__sub { font-style: italic; font-size: var(--t-lead); color: var(--c-graphite); margin: var(--s-2) 0 var(--s-4); }
+  .hero__teaser { color: var(--c-ink); max-width: 46ch; margin-bottom: var(--s-5); }
+  .hero__rest { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
+  .hero__rest :global(.bc__t) { font-size: 1rem; }
+  .hero__rest :global(.bc__s) { display: none; }
+  @media (max-width: 1100px) { .hero__grid { grid-template-columns: 1fr; } .hero__rest { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  @media (max-width: 700px) { .hero__lead { grid-template-columns: 1fr; } .hero__cover { max-width: 240px; }
+    .hero__rest { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 42%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: var(--s-3); }
+    .hero__rest > li { scroll-snap-align: start; } }
+
+  .grid-books { list-style: none; margin: 0; padding: 0; }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-7); }
+  @media (max-width: 860px) { .twocol { grid-template-columns: 1fr; gap: 0; } }
+
+  .fc { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-5); }
+  .fc__item { display: grid; grid-template-columns: 96px 1fr; gap: var(--s-4); align-items: start; }
+  .fc__cov { text-decoration: none; display: block; }
+  .fc__a { margin: 0; font: 500 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  .fc__t { font-size: 1.25rem; margin: 2px 0 var(--s-3); }
+  .fc__t a { text-decoration: none; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--s-3); margin: 0; font: 400 var(--t-micro)/1.4 var(--f-sans); }
+  .facts dt { color: var(--c-graphite); } .facts dd { margin: 0; font-weight: 600; }
+
+  .top { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: var(--s-5); }
+  .top li { display: grid; grid-template-columns: 2.2ch 1fr; gap: var(--s-2); break-inside: avoid; padding: var(--s-2) 0; border-bottom: var(--rule); }
+  .top__n { font: 500 1.25rem/1.1 var(--f-serif); color: var(--c-seal); text-align: right; }
+  .top__t { display: block; font-size: 1rem; line-height: 1.25; text-decoration: none; }
+  a.top__t:hover { text-decoration: underline; }
+  .top__a { display: block; font: 400 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  @media (max-width: 520px) { .top { columns: 1; } }
+
+  .ev { list-style: none; margin: 0; padding: 0; }
+  .ev__item { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: var(--rule); align-items: start; }
+  .ev__date { display: flex; flex-direction: column; align-items: center; border: 1px solid var(--c-margin); background: var(--c-sheet); padding: 6px 0; }
+  .ev__day { font: 500 1.375rem/1 var(--f-serif); } .ev__mon { font: 600 11px/1.3 var(--f-sans); text-transform: uppercase; color: var(--c-seal); }
+  .ev__time { margin: 0; font: 600 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  .ev__t { font-size: 1rem; line-height: 1.3; text-decoration: none; }
+  .ev__t:hover { text-decoration: underline; }
+
+  .pr { list-style: none; margin: 0; padding: 0; }
+  .pr__item { padding: var(--s-3) 0; border-bottom: var(--rule); }
+  .pr__meta { margin: 0; font: 600 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  .pr__t { font-size: 1.125rem; line-height: 1.25; margin: 4px 0; }
+  .pr__t a { text-decoration: none; } .pr__t a:hover { text-decoration: underline; }
+  .pr__b { margin: 0; font-style: italic; font-size: var(--t-small); color: var(--c-graphite); }
+
+  .extra { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s-6); align-items: start; }
+  .extra__video { aspect-ratio: 16 / 9; background: var(--c-shade); }
+  .extra__video iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .ban { list-style: none; margin: 0 0 var(--s-5); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
+  .ban__a { display: block; border: 1px solid var(--c-margin); }
+  .nl { border-top: var(--rule); padding-top: var(--s-4); }
+  .nl__t { font-size: var(--t-h3); margin-bottom: var(--s-2); }
+  @media (max-width: 860px) { .extra { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,148 @@
+---
+// Kiadvány aloldal (IA 4.3). Minden könyvhöz egy statikus oldal készül build közben.
+import Base from '../../layouts/Base.astro';
+import Cover from '../../components/Cover.astro';
+import BookCard from '../../components/BookCard.astro';
+import { books, authorById, categoryById, pressForBook, bookById, type Book } from '../../lib/data';
+import { huDate, price, excerpt } from '../../lib/text';
+
+export function getStaticPaths() {
+  return books.map((b) => ({ params: { slug: b.slug }, props: { book: b } }));
+}
+const { book } = Astro.props as { book: Book };
+const linkedAuthors = book.authors.map((a) => (a.id ? authorById.get(a.id) : undefined)).filter((a) => !!a);
+const more = linkedAuthors.flatMap((a) => a!.workIds).filter((id, i, arr) => id !== book.id && arr.indexOf(id) === i)
+  .map((id) => bookById.get(id)!).slice(0, 6);
+const cats = book.categoryIds.map((id) => categoryById.get(id)).filter((c) => !!c);
+const pressItems = pressForBook(book.id);
+const facts: [string, string][] = [];
+if (book.forthcoming) {
+  if (book.expected) facts.push(['Várható megjelenés', huDate(book.expected)]);
+  if (book.plannedPrice) facts.push(['Tervezett ár', price(book.plannedPrice)]);
+  if (book.plannedPages) facts.push(['Tervezett oldalszám', book.plannedPages]);
+} else {
+  if (book.published) facts.push(['Megjelenés', huDate(book.published)]);
+  if (book.firstEdition) facts.push(['Első kiadás dátuma', huDate(book.firstEdition)]);
+  if (book.pages) facts.push(['Terjedelem', `${book.pages} oldal`]);
+  if (book.price) facts.push(['Ár', price(book.price)]);
+}
+if (book.size) facts.push(['Méret', book.size.replace(/\s*x\s*/, ' × ')]);
+if (book.isbn) facts.push(['ISBN', book.isbn]);
+const desc = book.description.length ? excerpt(book.description.join(' '), 155) : undefined;
+---
+<Base title={book.title} description={desc} image={book.cover?.src}>
+  <article class="wrap bk">
+    <nav class="crumb" aria-label="Morzsamenü">
+      <ol><li><a href="/">Kezdőlap</a></li><li><a href="/kiadvanyok">Kiadványok</a></li><li aria-current="page">{book.title}</li></ol>
+    </nav>
+
+    <div class="bk__grid">
+      <div class="bk__cover"><Cover book={book} size="full" eager sizes="(min-width: 900px) 360px, 70vw" /></div>
+
+      <div class="bk__main">
+        {book.forthcoming && <p class="eyebrow">Előkészületben</p>}
+        {book.authors.length > 0 && (
+          <p class="bk__authors">
+            {book.authors.map((a, i) => <>{i > 0 && ', '}{a.slug ? <a href={`/szerzok/${a.slug}`}>{a.name}</a> : <span>{a.name}</span>}</>)}
+          </p>
+        )}
+        <h1 class="bk__title">{book.title}</h1>
+        {book.subtitle && <p class="bk__sub">{book.subtitle}</p>}
+        {book.translator && <p class="bk__tr">Fordította: {book.translator}</p>}
+
+        {facts.length > 0 && (
+          <dl class="bk__facts">{facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        )}
+
+        <div class="bk__cta">
+          {book.buyUrl && <a class="btn ext" href={book.buyUrl} rel="noopener">Megvásárolom a Líránál</a>}
+          {book.hasEbook && book.ebookUrl && <a class="btn btn--ghost ext" href={book.ebookUrl} rel="noopener">E-könyv</a>}
+        </div>
+        {book.buyUrl && <p class="meta bk__note">A vásárlás a Líra webáruházában történik (a Magvető a Líra-csoport tagja).</p>}
+
+        {book.description.length > 0 ? (
+          <div class="prose bk__desc">{book.description.map((p) => <p>{p}</p>)}</div>
+        ) : <p class="meta">Ehhez a kiadványhoz nem tartozik ismertető a kiadó oldalán.</p>}
+
+        {cats.length > 0 && (
+          <div class="bk__cats">
+            <h2 class="sr-only">A kiadó besorolása</h2>
+            <ul role="list">{cats.map((c) => <li><a class="chip" href={`/kategoriak/${c!.slug}`}>{c!.name}</a></li>)}</ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </article>
+
+  {linkedAuthors.length > 0 && (
+    <section class="wrap sec" aria-labelledby="szerzorol">
+      <div class="sec__head"><h2 id="szerzorol">{linkedAuthors.length > 1 ? 'A szerzőkről' : 'A szerzőről'}</h2></div>
+      <div class="ab">
+        {linkedAuthors.map((a) => (
+          <div class="ab__item">
+            {a!.photo ? <img class="ab__img" src={a!.photo.src} alt="" width="120" height="160" loading="lazy" /> : <span class="ab__mono" aria-hidden="true">{a!.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>}
+            <div>
+              <h3 class="ab__name"><a href={`/szerzok/${a!.slug}`}>{a!.name}</a>{a!.years && <span class="ab__years"> ({a!.years})</span>}</h3>
+              {a!.short && <p class="ab__short">{a!.short}</p>}
+              <a class="sec__more" href={`/szerzok/${a!.slug}`}>A szerző oldala →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {more.length > 0 && (
+    <section class="wrap sec" aria-labelledby="tovabbi">
+      <div class="sec__head"><h2 id="tovabbi">{linkedAuthors.length > 1 ? 'A szerzők további művei' : 'A szerző további művei'}</h2>
+        {linkedAuthors.length === 1 && <a class="sec__more" href={`/szerzok/${linkedAuthors[0]!.slug}`}>Összes mű →</a>}</div>
+      <ul class="grid-books" role="list">{more.map((b) => <li><BookCard book={b} /></li>)}</ul>
+    </section>
+  )}
+
+  {pressItems.length > 0 && (
+    <section class="wrap sec" aria-labelledby="sajto">
+      <div class="sec__head"><h2 id="sajto">Sajtóvisszhang</h2><a class="sec__more" href="/sajtoszoba">Sajtószoba →</a></div>
+      <ul class="pl" role="list">
+        {pressItems.map((p) => (
+          <li><p class="pl__m">{p.source} · {huDate(p.date)}</p><a class="pl__t" href={`/sajtoszoba/${p.slug}`}>{p.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>
+
+<style>
+  .crumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: var(--s-5) 0 var(--s-6); font: 400 var(--t-micro)/1.4 var(--f-sans); color: var(--c-graphite); }
+  .crumb li + li::before { content: "/"; margin-right: 6px; color: var(--c-margin); }
+  .crumb a { text-decoration: none; } .crumb a:hover { text-decoration: underline; }
+  .bk__grid { display: grid; grid-template-columns: minmax(200px, 360px) minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); align-items: start; }
+  .bk__cover { position: sticky; top: var(--s-5); }
+  .bk__authors { font: 500 1.0625rem/1.3 var(--f-sans); margin: 0 0 var(--s-2); }
+  .bk__authors a { text-decoration: none; border-bottom: 1px solid currentColor; }
+  .bk__title { font-size: var(--t-display); line-height: 1.02; letter-spacing: -0.015em; }
+  .bk__sub { font-style: italic; font-size: 1.375rem; line-height: 1.3; color: var(--c-graphite); margin: var(--s-3) 0 0; }
+  .bk__tr { font: 400 var(--t-small)/1.4 var(--f-sans); margin: var(--s-3) 0 0; color: var(--c-graphite); }
+  .bk__facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-4) var(--s-5); margin: var(--s-6) 0; padding: var(--s-4) 0; border-block: var(--rule); }
+  .bk__facts div { min-width: 0; }
+  .bk__facts dt { font: 500 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  .bk__facts dd { margin: 2px 0 0; font: 600 var(--t-small)/1.3 var(--f-sans); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .bk__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+  .bk__note { margin: var(--s-3) 0 var(--s-6); }
+  .bk__desc { font-size: 1.125rem; line-height: 1.65; }
+  .bk__cats ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin: var(--s-5) 0 0; }
+  @media (max-width: 760px) { .bk__grid { grid-template-columns: 1fr; } .bk__cover { position: static; max-width: 260px; } }
+
+  .ab { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .ab__item { display: grid; grid-template-columns: 120px 1fr; gap: var(--s-5); align-items: start; }
+  .ab__img { width: 120px; height: 160px; object-fit: cover; filter: grayscale(1) contrast(1.05); background: var(--c-shade); }
+  .ab__mono { width: 120px; height: 160px; display: grid; place-items: center; background: var(--c-sheet); border: 1px solid var(--c-margin); font: 500 2.25rem/1 var(--f-serif); color: var(--c-graphite); }
+  .ab__name { font-size: 1.5rem; } .ab__name a { text-decoration: none; } .ab__name a:hover { text-decoration: underline; }
+  .ab__years { font: 400 var(--t-small)/1 var(--f-sans); color: var(--c-graphite); }
+  .ab__short { margin: var(--s-2) 0 var(--s-3); max-width: 60ch; }
+  .grid-books { list-style: none; margin: 0; padding: 0; }
+  .pl { list-style: none; padding: 0; margin: 0; }
+  .pl li { padding: var(--s-3) 0; border-bottom: var(--rule); }
+  .pl__m { margin: 0; font: 600 var(--t-micro)/1.3 var(--f-sans); color: var(--c-graphite); }
+  .pl__t { font-size: 1.125rem; text-decoration: none; } .pl__t:hover { text-decoration: underline; }
+</style>

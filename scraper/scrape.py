@@ -192,6 +192,13 @@ def scrape_home():
                     if card and card["bookId"] not in [x["bookId"] for x in cards]:
                         cards.append(card)
             home["sections"][key] = cards
+    # Líra-bannerek (a „- hirdetés -” felirat melletti dobozok)
+    home["banners"] = []
+    for box in c.select("div.boxes"):
+        if "hirdetés" in (box.get_text(" ", strip=True) or ""):
+            a = box.select_one("a[href]"); im = box.select_one("img[src]")
+            if a and im:
+                home["banners"].append({"href": a["href"], "imgSrc": urljoin(BASE, im["src"])})
     yt = c.select_one("iframe[src*='youtube']")
     if yt:
         home["video"] = {"src": yt["src"], "title": yt.get("title")}
@@ -374,10 +381,49 @@ def main():
     ap.add_argument("--list-size", type=int, default=50)
     ap.add_argument("--press", type=int, default=50)
     ap.add_argument("--cat-pages", type=int, default=3)
+    ap.add_argument("--fill-authors", action="store_true", help="a könyvekben hivatkozott, de a szerzőlistából hiányzó szerzők (és műveik) pótlása")
+    ap.add_argument("--only-home", action="store_true", help="csak a kezdőlap (home.json + bannerek) frissítése")
     ap.add_argument("--only-categories", action="store_true",
                     help="csak a kategória-címkéket frissíti a meglévő books.json-ban (minden kategóriaoldalt bejár)")
     a = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
+    if a.fill_authors:
+        books = {b["id"]: b for b in json.load(open(os.path.join(OUT, "books.json")))}
+        authors = json.load(open(os.path.join(OUT, "authors.json")))
+        have = {x["id"] for x in authors}
+        missing = sorted({au["id"] for b in books.values() for au in b["authors"] if au.get("id") and au["id"] not in have})
+        print("missing authors:", missing)
+        with ThreadPoolExecutor(4) as ex:
+            new = [x for x in ex.map(scrape_author, missing) if x]
+        for x in new:
+            x["notInIndex"] = True
+            r = save_image(x["photoSrc"], os.path.join(MEDIA, "authors", f"{x['id']}.webp"), 800)
+            x["photo"] = ({"src": f"/media/authors/{x['id']}.webp", **r} if isinstance(r, dict) else ({"src": f"/media/authors/{x['id']}.webp"} if r else None))
+        extra = [w["bookId"] for x in new for w in x["works"] if w["bookId"] and w["bookId"] not in books]
+        extra = list(dict.fromkeys(extra))
+        with ThreadPoolExecutor(4) as ex:
+            more = [b for b in ex.map(scrape_book, extra) if b]
+        cats = json.load(open(os.path.join(OUT, "categories.json")))
+        for b in more:
+            b["categories"] = []
+            r = save_image(b["coverSrc"], os.path.join(MEDIA, "covers", f"{b['id']}.webp"), 900)
+            b["cover"] = ({"src": f"/media/covers/{b['id']}.webp", **r} if isinstance(r, dict) else ({"src": f"/media/covers/{b['id']}.webp"} if r else None))
+            books[b["id"]] = b
+        json.dump(authors + new, open(os.path.join(OUT, "authors.json"), "w"), ensure_ascii=False, indent=1)
+        json.dump(list(books.values()), open(os.path.join(OUT, "books.json"), "w"), ensure_ascii=False, indent=1)
+        print(json.dumps({"newAuthors": [(x["id"], x["name"]) for x in new], "newBooks": len(more), "errors": ERRORS[:20]}, ensure_ascii=False, indent=1))
+        return
+    if a.only_home:
+        home = scrape_home()
+        for i, bn in enumerate(home["banners"]):
+            ext = os.path.splitext(urlparse(bn["imgSrc"]).path)[1] or ".gif"
+            dest = os.path.join(MEDIA, "banners", f"banner-{i+1}{ext}")
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            r = S.get(bn["imgSrc"], timeout=30)
+            if r.status_code == 200:
+                open(dest, "wb").write(r.content); bn["img"] = f"/media/banners/banner-{i+1}{ext}"
+        json.dump(home, open(os.path.join(OUT, "home.json"), "w"), ensure_ascii=False, indent=1)
+        print(json.dumps(home["banners"], ensure_ascii=False, indent=1)); return
     if a.only_categories:
         books = json.load(open(os.path.join(OUT, "books.json")))
         cats, _ = scrape_categories(a.cat_pages)
@@ -433,6 +479,13 @@ def main():
                 au["id"] = au["id"] or by_name.get(norm_name(au["name"]))
     else:
         books = {}
+
+    # a szerzőlistában nem szereplő, de könyvekben hivatkozott szerzők
+    have = {x["id"] for x in authors}
+    missing = sorted({au["id"] for b in books.values() for au in b["authors"] if au.get("id") and au["id"] not in have})
+    with ThreadPoolExecutor(4) as ex:
+        for x in ex.map(scrape_author, missing):
+            if x: x["notInIndex"] = True; authors.append(x)
 
     # kategória-címkék
     for b in books.values():

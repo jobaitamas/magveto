@@ -1,0 +1,20 @@
+{
+  "name": "magveto-concept",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "thumbs": "node scripts/thumbs.mjs",
+    "dev": "astro dev",
+    "build": "node scripts/thumbs.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@fontsource/montserrat": "^5.3.0",
+    "astro": "^7.4.11",
+    "minisearch": "^7.2.0",
+    "sharp": "^0.35.5"
+  }
+}

@@ -1,0 +1,17 @@
+---
+// Logó: a megtartott „m” jel (vektorizált) + „MAGVETŐ KIADÓ” felirat.
+// A felirat a régi logó rekonstrukciója Montserrat betűvel (döntésnapló) – az eredeti vektort a kiadótól kell kérni.
+import markRaw from '../../brand/logo.svg?raw';
+const { size = 40, wordmark = true } = Astro.props;
+const mark = markRaw.replace('<svg ', `<svg width="${size}" height="${size}" focusable="false" aria-hidden="true" `).replace(/ role="img" aria-label="[^"]*"/, '');
+---
+<span class="logo">
+  <span class="logo__mark" set:html={mark} />
+  {wordmark && <span class="logo__word" aria-hidden="true">Magvető<br />Kiadó</span>}
+  <span class="sr-only">Magvető Kiadó</span>
+</span>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 10px; color: var(--c-ink); }
+  .logo__mark { display: block; line-height: 0; }
+  .logo__word { font: 500 0.8125rem/1.25 var(--f-wordmark); letter-spacing: 0.14em; text-transform: uppercase; }
+</style>

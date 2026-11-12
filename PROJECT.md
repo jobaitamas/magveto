@@ -82,6 +82,13 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 | 2026-11-12 | Repo: https://github.com/jobaitamas/magveto (push-hoz a Claude GitHub App telepítése kell a repóra) | Tamás |
 | 2026-11-12 | Első leszedés kész (GitHub Actions): 325 könyv (59 „core” = kezdőlap + 50 legfrissebb, + a core-szerzők összes műve), 252 szerző (176 fotóval, 148 hosszú bióval), 50 sajtótétel, 31 kategória; 74 hiba, főleg hiányzó (404) képfájl a forrásszerveren. Minden szerző műlistájában összesen 687 mű van | Claude |
 | 2026-11-12 | Logó-felirat: a régi `logo.jpg` 295×97 px, pontos vektorizálás nem lehetséges → újraszedés a legközelebbi ingyenes betűvel: **Montserrat 500, nagybetű, ritkítva, két sor („MAGVETŐ / KIADÓ”)**. Ez rekonstrukció, nem az eredeti; a pitchnél jelezni / az eredeti vektort a kiadótól kérni | Claude |
+| 2026-11-12 | IA-1: scope-on kívüli oldalak (A kiadóról, E-könyv, Hírek, Kéziratról, English) → a láblécben a mostani oldalra linkelünk (↗) | Tamás |
+| 2026-11-12 | IA-2: a szerzőoldalakon szereplő **összes** mű adatlapját leszedjük (`--works all`) – teljesebb kép, nincs zsákutca | Tamás |
+| 2026-11-12 | IA-3: események közül csak a jövőbeliek látszanak (build-időpont szerint; a dátum év nélkül van a forrásban → az aktuális/következő évre értelmezzük) | Tamás |
+| 2026-11-12 | IA-4: Líra-bannerek **maradnak**, de konszolidáltan (kisebb, kevésbé prominens „Ajánló” hely). Kutatás: a Magvető anyacége a Líra Könyv Zrt.; 1993-as privatizáció után a Líra és Lant Rt. (ma Líra Könyv Zrt.) vásárolta meg, azóta önállóan működik a Líra-csoporton belül. A Líra kiadói csoport + könyvesbolt-hálózat + nagykereskedő → a vásárlás-linkek (lira.hu) és a bannerek a kiadó saját értékesítési csatornái. Következmény: lábléc „A Líra-csoport tagja” + csoportlinkek; „Megvásárolom a Líránál” marad elsődleges CTA | Tamás + Claude |
+| 2026-11-12 | IA-5: nincs műfajszűrő az MVP-ben (rendezés + állapot: Megjelent / Előkészületben / E-könyvben is), **de a meglévő besorolás megmarad**: a könyv oldalán címkék, a címke egy kategóriaoldalra visz („a kiadó besorolása szerint”, darabszámmal). Ez Claude értelmezése → Tamás ellenőrizze a Fázis 4-ben | Tamás |
+| 2026-11-12 | IA-6: tipográfiai normalizálás engedélyezve (,, → „ ”, hiányzó szóköz írásjel után, CSUPA NAGYBETŰS nevek → Mácsai Pál, „Ernaux, Annie” → „Annie Ernaux” megjelenítésben; névsorrendhez az eredeti forma). A szöveg szóra pontosan marad | Tamás |
+| 2026-11-12 | Fázis 3 (IA) **jóváhagyva** | Tamás |
 | 2026-11-12 | Betűk: Google Fonts helyett önhosztolt @fontsource csomagok (npm-ről elérhetők, gyorsabb, GDPR-barátabb) | Claude |
 
 ## 7b. Forrásoldal-szerkezet (felderítve, a scraperhez)
@@ -97,7 +104,7 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 
 ## 8. Nyitott kérdések
 - Claude GitHub App telepítése a repóra (push blokkolva nélküle)
-- IA v1 döntési kérdései (ia/ia-wireframes-v1.html, 7. fejezet): scope-on kívüli menüpontok, aloldal nélküli művek (+362 mű leszedése?), lejárt események, Líra-bannerek, szűrőcsoportok, tipográfiai igazítás
+- Vercel: Tamás köti be a repót (Import project → jobaitamas/magveto), amikor az Astro-projekt fent van
 - Tipográfiai normalizálás engedélye (,, → „, szóköz, kis-nagybetű, névsorrend a kártyákon) – szöveg szóra pontosan marad
 - Könyv-aloldalak köre: a scraper első futása után számok alapján döntünk (core = kezdőlap + 50 legfrissebb; + a szerzőik összes műve?)
 
@@ -105,9 +112,9 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 - Fázis 0: kész, kivéve repo/GitHub.
 - Fázis 1 (leszedés): kész (lásd döntésnapló). Kategória-címkék teljes bejárása folyamatban/kész (`--only-categories`).
 - Fázis 2 (brand): **jóváhagyva – A „Papír”**. Részletes design system a Fázis 4-ben.
-- Fázis 3 (IA + wireframe): v1 kész → `ia/ia-wireframes-v1.html` → **Tamás jóváhagyására vár** (6 kérdés).
+- Fázis 3 (IA + wireframe): **jóváhagyva** (`ia/ia-wireframes-v1.html` + döntésnapló IA-1…6).
+- Fázis 4 (design system + kulcsképernyők): indul – kódban (Astro), élő preview-n bemutatva: stílusoldal + Kezdőlap + Kiadvány aloldal.
 
 ## 10. Következő lépés
-- Tamás: IA v1 jóváhagyás + 6 kérdés.
-- Claude: utána Fázis 4 (design system + kulcsképernyők a Papír irányban), majd fejlesztés.
+- Claude: Fázis 4 Astro-ban → push → Tamás beköti a Vercelt → preview link jóváhagyásra.
 - GitHub Actions indítása: `gh api -X POST repos/jobaitamas/magveto/actions/workflows/scrape.yml/dispatches -f ref=main -f 'inputs[...]=...'` (a `gh workflow run` GraphQL miatt nem megy).

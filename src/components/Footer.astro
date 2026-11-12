@@ -1,0 +1,65 @@
+---
+// Lábléc: elérhetőség, navigáció, a Líra-csoport linkjei (a mostani oldal láblécéből), a scope-on kívüli oldalak a mostani magveto.hu-ra mutatnak (IA-1).
+import Logo from './Logo.astro';
+const OLD = 'https://magveto.hu/index.php?action=';
+const year = new Date().getFullYear();
+---
+<footer class="ft">
+  <div class="wrap ft__grid">
+    <div class="ft__brand">
+      <Logo size={44} />
+      <p class="meta">Magvető Könyvkiadó és Kereskedelmi Kft.<br />1086 Budapest, Dankó u. 4–8.</p>
+      <p class="meta">A Líra-csoport tagja.</p>
+    </div>
+    <nav aria-label="Lábléc – oldalak">
+      <h2 class="ft__h">Oldalak</h2>
+      <ul>
+        <li><a href="/kiadvanyok">Kiadványok</a></li>
+        <li><a href="/szerzok">Szerzők</a></li>
+        <li><a href="/sajtoszoba">Sajtószoba</a></li>
+        <li><a href="/kapcsolat">Kapcsolat</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Lábléc – a mostani magveto.hu">
+      <h2 class="ft__h">A mostani oldalon</h2>
+      <ul>
+        <li><a class="ext" href={`${OLD}kiadorol`} rel="noopener">A kiadóról</a></li>
+        <li><a class="ext" href={`${OLD}list&mode=ekonyv`} rel="noopener">E-könyv</a></li>
+        <li><a class="ext" href={`${OLD}hirek`} rel="noopener">Hírek</a></li>
+        <li><a class="ext" href={`${OLD}keziratrol`} rel="noopener">Kéziratról</a></li>
+        <li><a class="ext" href={`${OLD}angol`} rel="noopener" lang="en">English</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Lábléc – Líra-csoport és közösség">
+      <h2 class="ft__h">Líra-csoport</h2>
+      <ul>
+        <li><a class="ext" href="http://lirakonyv.hu/" rel="noopener">Könyvportál</a></li>
+        <li><a class="ext" href="http://lirakonyv.hu/web/guest/kiskereskedelem" rel="noopener">Kiskereskedelem</a></li>
+        <li><a class="ext" href="http://lirakonyv.hu/web/guest/nagykereskedelem" rel="noopener">Nagykereskedelem</a></li>
+        <li><a class="ext" href="http://lirakonyv.hu/web/guest/kiadok" rel="noopener">Kiadók</a></li>
+      </ul>
+      <h2 class="ft__h ft__h--2">Kövess minket</h2>
+      <ul class="ft__social">
+        <li><a class="ext" href="http://www.facebook.com/magveto" rel="noopener">Facebook</a></li>
+        <li><a class="ext" href="http://twitter.com/MagvetoKiado" rel="noopener">X (Twitter)</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap ft__base">
+    <p>Koncepcióterv – nem hivatalos oldal. A tartalom forrása a <a href="https://magveto.hu/" rel="noopener">magveto.hu</a> ({year}). Minden jog a jogtulajdonosoké.</p>
+    <p><a class="ext" href={`${OLD}tamogatok`} rel="noopener">Támogatók</a> · <a class="ext" href="https://magveto.hu/pdf" rel="noopener">Adatkezelési tájékoztató</a></p>
+  </div>
+</footer>
+<style>
+  .ft { margin-top: var(--s-9); background: var(--c-sheet); border-top: var(--rule-strong); }
+  .ft__grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: var(--s-6); padding-block: var(--s-7); }
+  .ft__brand .meta { margin-top: var(--s-4); margin-bottom: 0; }
+  .ft__h { font: 600 var(--t-micro)/1.2 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--c-graphite); margin-bottom: var(--s-3); }
+  .ft__h--2 { margin-top: var(--s-5); }
+  .ft ul { list-style: none; margin: 0; padding: 0; }
+  .ft li a { display: inline-block; padding: 4px 0; font: 400 var(--t-small)/1.4 var(--f-sans); text-decoration: none; }
+  .ft li a:hover { text-decoration: underline; }
+  .ft__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-3); border-top: var(--rule); padding-block: var(--s-4) var(--s-6); font: 400 var(--t-micro)/1.5 var(--f-sans); color: var(--c-graphite); }
+  .ft__base p { margin: 0; }
+  @media (max-width: 860px) { .ft__grid { grid-template-columns: 1fr 1fr; } .ft__brand { grid-column: 1 / -1; } }
+</style>

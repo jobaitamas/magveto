@@ -1,0 +1,122 @@
+---
+// Design system – élő stílusoldal (Fázis 4). A kontrasztértékek build közben számolódnak.
+import Base from '../layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import Logo from '../components/Logo.astro';
+import { books, home } from '../lib/data';
+
+const colors = [
+  ['Papír', '--c-paper', '#F5F1E8', 'Oldalháttér'],
+  ['Lap', '--c-sheet', '#FFFDF8', 'Kártya, felület, mező'],
+  ['Tinta', '--c-ink', '#1B1A17', 'Elsődleges szöveg, gomb'],
+  ['Grafit', '--c-graphite', '#5E5A52', 'Másodlagos szöveg, metaadat'],
+  ['Pecsétpiros', '--c-seal', '#A4281B', 'Link, fókusz, aktív állapot – csak funkcióra'],
+  ['Vezérlő', '--c-control', '#8A8478', 'Mezők, címkék kerete'],
+  ['Margó', '--c-margin', '#D9D2C3', 'Dekoratív vonal'],
+  ['Árnyalat', '--c-shade', '#ECE6D9', 'Helykitöltő, hover háttér'],
+];
+function lum(hex: string) {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+function ratio(a: string, b: string) { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); }
+const pairs = [
+  ['Tinta a papíron', '#1B1A17', '#F5F1E8', 4.5],
+  ['Grafit a papíron', '#5E5A52', '#F5F1E8', 4.5],
+  ['Pecsétpiros a papíron', '#A4281B', '#F5F1E8', 4.5],
+  ['Pecsétpiros a lapon', '#A4281B', '#FFFDF8', 4.5],
+  ['Papír a tintán (gomb)', '#F5F1E8', '#1B1A17', 4.5],
+  ['Fehér a pecsétpiroson (gomb hover)', '#FFFFFF', '#A4281B', 4.5],
+  ['Vezérlő keret a papíron (nem szöveg)', '#8A8478', '#F5F1E8', 3],
+] as const;
+const sample = home.newest.slice(0, 4);
+const noCover = books.find((b) => !b.cover);
+---
+<Base title="Design system">
+  <div class="wrap sg">
+    <p class="eyebrow">Fázis 4 · Design system v1</p>
+    <h1 class="sg__h1">„Papír” – stílusoldal</h1>
+    <p class="lead">Az irodalom az első: a borító, a cím és a szerző a hős, a felület hátrébb lép. Egy jel, egy kiemelő szín – csak funkcióra.</p>
+
+    <section class="sec"><div class="sec__head"><h2>Logó</h2></div>
+      <div class="sg__logos">
+        <div class="sg__logo"><Logo size={72} /></div>
+        <div class="sg__logo sg__logo--dark"><Logo size={72} /></div>
+        <div class="sg__logo"><Logo size={72} wordmark={false} /></div>
+      </div>
+      <p class="meta">Az „m” jel a megtartott elem (pixelpontos vektorizálás). A „Magvető Kiadó” felirat a régi logó rekonstrukciója Montserrat betűvel – az eredeti vektort a kiadótól kell kérni.</p>
+    </section>
+
+    <section class="sec"><div class="sec__head"><h2>Színek</h2></div>
+      <ul class="sg__colors" role="list">
+        {colors.map(([n, v, hex, use]) => (
+          <li><span class="sw" style={`background:${hex}`}></span><b>{n}</b><code>{hex}</code><code>{v}</code><span class="meta">{use}</span></li>
+        ))}
+      </ul>
+      <h3 class="sg__h3">Kontraszt (WCAG 2.2 AA)</h3>
+      <table class="sg__table">
+        <thead><tr><th>Pár</th><th>Arány</th><th>Követelmény</th><th>Eredmény</th></tr></thead>
+        <tbody>{pairs.map(([n, a, b, min]) => { const r = ratio(a, b); return (
+          <tr><td><span class="sg__pair" style={`color:${a};background:${b}`}>Aa</span> {n}</td><td>{r.toFixed(2)}:1</td><td>≥ {min}:1</td><td>{r >= min ? '✓ megfelel' : '✗ nem felel meg'}</td></tr>
+        ); })}</tbody>
+      </table>
+    </section>
+
+    <section class="sec"><div class="sec__head"><h2>Tipográfia</h2></div>
+      <div class="sg__type">
+        <p class="meta">Display · Newsreader 500 · fluid 38–64 px</p><p class="t-display">Két kép között</p>
+        <p class="meta">Címsor 1 · Newsreader 500 · 32–48 px</p><p class="t-h1">Újdonságok</p>
+        <p class="meta">Címsor 2 · 24–32 px</p><p class="t-h2">A szerző további művei</p>
+        <p class="meta">Alcím · Newsreader dőlt</p><p class="t-sub">Önportré és vallomás</p>
+        <p class="meta">Törzsszöveg · Newsreader 17 px · sorköz 1.6 · max. 68 karakter/sor</p>
+        <p class="prose">{books.find((b) => b.id === '139537122')?.description[0]}</p>
+        <p class="meta">Felület (menü, gomb, metaadat) · Instrument Sans</p>
+        <p class="sans">Kiadványok · Szerzők · Sajtószoba · Kapcsolat — 2026. november 3. · 280 oldal · 6 499 Ft</p>
+        <p class="meta">Ékezetpróba</p><p class="t-h2">Őszi Űrhajó – ő ű Ő Ű „idézet” – gondolatjel</p>
+      </div>
+    </section>
+
+    <section class="sec"><div class="sec__head"><h2>Vezérlők</h2></div>
+      <div class="sg__row">
+        <a class="btn" href="#">Elsődleges gomb</a>
+        <a class="btn btn--ghost" href="#">Másodlagos gomb</a>
+        <a class="btn ext" href="#">Külső link gomb</a>
+        <a class="chip" href="#">Címke</a>
+        <a href="#" class="sec__more">Szöveges link →</a>
+      </div>
+      <p class="meta">Minden vezérlő legalább 44 px magas (érintés). Billentyűzetes fókusz: pecsétpiros keret – próbáld ki a Tab billentyűvel.</p>
+    </section>
+
+    <section class="sec"><div class="sec__head"><h2>Könyvkártya</h2><a class="sec__more" href="#">Szekció-link →</a></div>
+      <ul class="grid-books sg__cards" role="list">
+        {sample.map((b) => <li><BookCard book={b} showPrice /></li>)}
+        {noCover && <li><BookCard book={noCover} /></li>}
+      </ul>
+      <p class="meta">Az utolsó kártya (ha van ilyen könyv) a borító nélküli üres állapotot mutatja: tipográfiai helykitöltő, nem kitalált kép.</p>
+    </section>
+  </div>
+</Base>
+<style>
+  .sg { padding-top: var(--s-7); }
+  .sg__h1 { font-size: var(--t-h1); margin: var(--s-2) 0 var(--s-3); }
+  .lead { font-size: var(--t-lead); color: var(--c-graphite); max-width: 60ch; }
+  .sg__logos { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-bottom: var(--s-4); }
+  .sg__logo { padding: var(--s-6); background: var(--c-sheet); border: var(--rule); }
+  .sg__logo :global(.logo__word) { font-size: 1.25rem; }
+  .sg__logo--dark { background: var(--c-ink); } .sg__logo--dark :global(.logo) { color: var(--c-paper); }
+  .sg__colors { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-4); }
+  .sg__colors li { display: grid; grid-template-columns: 56px 1fr; grid-template-rows: auto auto auto auto; column-gap: var(--s-3); font: 400 var(--t-small)/1.4 var(--f-sans); }
+  .sw { grid-row: 1 / span 4; width: 56px; height: 56px; border: 1px solid rgba(0,0,0,.12); }
+  code { font-size: 12px; color: var(--c-graphite); }
+  .sg__h3 { font-size: var(--t-h3); margin: var(--s-6) 0 var(--s-3); }
+  .sg__table { width: 100%; border-collapse: collapse; font: 400 var(--t-small)/1.4 var(--f-sans); background: var(--c-sheet); }
+  .sg__table th, .sg__table td { text-align: left; padding: 10px 12px; border-bottom: var(--rule); }
+  .sg__pair { display: inline-block; padding: 2px 8px; font-weight: 600; border: 1px solid var(--c-margin); margin-right: 6px; }
+  .sg__type p { margin: 0 0 var(--s-2); }
+  .sg__type .meta { margin-top: var(--s-5); }
+  .t-display { font: 500 var(--t-display)/1.02 var(--f-serif); letter-spacing: -0.015em; }
+  .t-h1 { font: 500 var(--t-h1)/1.05 var(--f-serif); } .t-h2 { font: 500 var(--t-h2)/1.1 var(--f-serif); }
+  .t-sub { font: italic 400 1.375rem/1.3 var(--f-serif); color: var(--c-graphite); }
+  .sg__row { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; margin-bottom: var(--s-4); }
+  .sg__cards { list-style: none; padding: 0; margin: 0 0 var(--s-4); }
+</style>

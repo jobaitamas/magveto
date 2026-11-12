@@ -14,6 +14,12 @@ on:
         default: "false"
       cat_pages:
         default: "3"
+      only_home:
+        description: "true = csak a kezdőlap frissítése"
+        default: "false"
+      fill_authors:
+        description: "true = hiányzó szerzők pótlása"
+        default: "false"
 permissions:
   contents: write
 jobs:
@@ -26,7 +32,11 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install requests beautifulsoup4 pillow
       - run: |
-          if [ "${{ inputs.only_categories }}" = "true" ]; then
+          if [ "${{ inputs.fill_authors }}" = "true" ]; then
+            python scraper/scrape.py --fill-authors
+          elif [ "${{ inputs.only_home }}" = "true" ]; then
+            python scraper/scrape.py --only-home
+          elif [ "${{ inputs.only_categories }}" = "true" ]; then
             python scraper/scrape.py --only-categories --cat-pages "${{ inputs.cat_pages }}"
           else
             python scraper/scrape.py --works "${{ inputs.works }}" --list-size "${{ inputs.list_size }}" --press "${{ inputs.press }}" --cat-pages "${{ inputs.cat_pages }}"
