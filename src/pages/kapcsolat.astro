@@ -1,0 +1,65 @@
+---
+// Kapcsolat (IA 4.8): a magveto.hu Kapcsolat oldalának adatai szerepkörök szerint tagolva.
+import Base from '../layouts/Base.astro';
+import Mail from '../components/Mail.astro';
+import { company, groups, telHref } from '../lib/contact';
+const mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(company.address.replace('4-8.', '4–8') + ', Magyarország');
+const general = groups.find((g) => g.title === 'Szerkesztőségi titkár')!;
+---
+<Base title="Kapcsolat" description="A Magvető Kiadó elérhetőségei.">
+  <div class="wrap pg">
+    <h1 class="pg__h1">Kapcsolat</h1>
+    <div class="top">
+      <section class="card" aria-labelledby="ceg">
+        <h2 id="ceg" class="card__h">{company.name}</h2>
+        <p>{company.address.replace('4-8.', '4–8.')}</p>
+        <a class="btn btn--ghost ext" href={mapUrl} rel="noopener">Útvonal a térképen</a>
+      </section>
+      <section class="card" aria-labelledby="alt">
+        <h2 id="alt" class="card__h">Általános megkeresés</h2>
+        {general.people.map((p) => <>
+          <p>{p.phone && <a href={`tel:${telHref(p.phone)}`}>{p.phone}</a>}</p>
+          {p.mail && <p><Mail mail={p.mail} /></p>}
+          <p class="meta">Szerkesztőségi titkár: {p.name}</p>
+        </>)}
+      </section>
+    </div>
+
+    <h2 class="sub">Munkatársak</h2>
+    <div class="grid">
+      {groups.map((g) => (
+        <section class="role" aria-labelledby={`r-${g.title}`}>
+          <h3 class="role__h" id={`r-${g.title}`}>{g.title}</h3>
+          {g.people.map((p) => (
+            <div class="person">
+              <p class="person__n">{p.name}{p.role && <span class="muted"> – {p.role}</span>}</p>
+              {p.phone && <p><a href={`tel:${telHref(p.phone)}`}>{p.phone}</a></p>}
+              {p.mail && <p><Mail mail={p.mail} /></p>}
+            </div>
+          ))}
+          {g.phones && <p>Telefon: {g.phones.map((ph, i) => <>{i > 0 && ', '}<a href={`tel:${telHref(ph)}`}>{ph}</a></>)}</p>}
+          {g.mail && <p><Mail mail={g.mail} /></p>}
+        </section>
+      ))}
+    </div>
+    <p class="meta note">Az e-mail-címeket a böngésző jeleníti meg, így a gépi címgyűjtők a forráskódban nem találják meg őket.</p>
+  </div>
+</Base>
+<style>
+  .pg { padding-top: var(--s-7); }
+  .pg__h1 { font-size: var(--t-h1); margin-bottom: var(--s-6); }
+  .top { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); }
+  .card { background: var(--c-sheet); border: var(--rule); padding: var(--s-5) var(--s-6); font-family: var(--f-sans); }
+  .card p { margin: 0 0 var(--s-2); }
+  .card__h { font-size: var(--t-h3); margin-bottom: var(--s-3); font-family: var(--f-serif); }
+  .card .btn { margin-top: var(--s-3); }
+  .sub { font-size: var(--t-h2); border-top: var(--rule-strong); padding-top: var(--s-4); margin: var(--s-8) 0 var(--s-5); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-5) var(--s-6); }
+  .role { font: 400 var(--t-small)/1.5 var(--f-sans); border-top: var(--rule); padding-top: var(--s-3); }
+  .role p { margin: 0; }
+  .role__h { font: 600 var(--t-micro)/1.3 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--c-graphite); margin-bottom: var(--s-2); }
+  .person { margin-bottom: var(--s-3); }
+  .person__n { font-weight: 600; }
+  .note { margin-top: var(--s-7); }
+  @media (max-width: 760px) { .top { grid-template-columns: 1fr; } }
+</style>

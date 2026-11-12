@@ -89,6 +89,10 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 | 2026-11-12 | IA-5: nincs műfajszűrő az MVP-ben (rendezés + állapot: Megjelent / Előkészületben / E-könyvben is), **de a meglévő besorolás megmarad**: a könyv oldalán címkék, a címke egy kategóriaoldalra visz („a kiadó besorolása szerint”, darabszámmal). Ez Claude értelmezése → Tamás ellenőrizze a Fázis 4-ben | Tamás |
 | 2026-11-12 | IA-6: tipográfiai normalizálás engedélyezve (,, → „ ”, hiányzó szóköz írásjel után, CSUPA NAGYBETŰS nevek → Mácsai Pál, „Ernaux, Annie” → „Annie Ernaux” megjelenítésben; névsorrendhez az eredeti forma). A szöveg szóra pontosan marad | Tamás |
 | 2026-11-12 | Fázis 3 (IA) **jóváhagyva** | Tamás |
+| 2026-11-12 | Vercel bekötve: **https://magveto-koncepcio.vercel.app/** (minden push a `main`-re automatikusan élesít) | Tamás |
+| 2026-11-12 | Fázis 4 (design system + kezdőlap + kiadvány aloldal) **jóváhagyva** | Tamás |
+| 2026-11-12 | Kiadványok alapértelmezett rendezése: megjelent könyvek a megjelenés szerint csökkenőben, az előkészületben lévők a végén (a forrásoldal is így kezd); a teljes 699 kiadvány látszik (nem csak 50) | Claude |
+| 2026-11-12 | Telefonszámok: a forrás szerinti alakban jelennek meg; a kattintható hívószámhoz +36 1 előhívó (budapesti 7 jegyű számok) | Claude |
 | 2026-11-12 | Betűk: Google Fonts helyett önhosztolt @fontsource csomagok (npm-ről elérhetők, gyorsabb, GDPR-barátabb) | Claude |
 
 ## 7b. Forrásoldal-szerkezet (felderítve, a scraperhez)
@@ -113,10 +117,12 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 - Fázis 1 (leszedés): kész (lásd döntésnapló). Kategória-címkék teljes bejárása folyamatban/kész (`--only-categories`).
 - Fázis 2 (brand): **jóváhagyva – A „Papír”**. Részletes design system a Fázis 4-ben.
 - Fázis 3 (IA + wireframe): **jóváhagyva** (`ia/ia-wireframes-v1.html` + döntésnapló IA-1…6).
-- Fázis 4 (design system + kulcsképernyők): **kész, jóváhagyásra vár** – kódban (Astro): `/stilus`, `/` (kezdőlap), `/konyvek/[slug]`. Teljes műlista leszedve (699 könyv, 254 szerző – Mácsai Pál és Marstein, Trude pótolva a szerzőlistán kívülről). Kereső (MiniSearch, ékezetfüggetlen) működik a fejlécben. axe-core: 0 hiba a 3 oldalon.
+- Fázis 4 (design system + kulcsképernyők): **jóváhagyva** – kódban (Astro): `/stilus`, `/` (kezdőlap), `/konyvek/[slug]`. Teljes műlista leszedve (699 könyv, 254 szerző – Mácsai Pál és Marstein, Trude pótolva a szerzőlistán kívülről). Kereső (MiniSearch, ékezetfüggetlen) működik a fejlécben. axe-core: 0 hiba a 3 oldalon.
   - Kód-térkép: `src/lib/data.ts` (adatmodell, összekötések), `src/lib/text.ts` (tipográfia, slug, magyar ábécé), `src/styles/global.css` (tokenek), `src/components/*`, `src/pages/*`, `src/scripts/search.ts`, `scripts/thumbs.mjs` (bélyegképek + statikus bannerek, build előtt).
-  - Ismert, még hiányzó oldalak (Fázis 5): /kiadvanyok, /szerzok, /szerzok/[slug], /kereses, /sajtoszoba(+tétel), /kapcsolat, /kategoriak/[slug] → a preview-n ezek linkjei még 404.
+- Fázis 5 (minden oldal): **kész, jóváhagyásra vár** – /kiadvanyok (rendezés, állapotszűrő, Továbbiak, URL-állapot), /kategoriak/[slug], /szerzok (magyar ábécé, szűrés), /szerzok/[slug], /kereses (fülek, kiemelés, üres állapot toplistával), /sajtoszoba (+ tétel), /kapcsolat (e-mail JS-sel összerakva), 404. 1033 HTML oldal.
+  - QA: belső link-ellenőrzés 0 törött; axe-core 0 hiba 14 oldaltípuson; interakciós tesztek (szűrés, rendezés, továbbiak, szerzőszűrés, e-mail) rendben.
 
 ## 10. Következő lépés
-- Claude: Fázis 4 Astro-ban → push → Tamás beköti a Vercelt → preview link jóváhagyásra.
+- Tamás: Fázis 5 átnézése az élő oldalon, javítások listája.
+- Claude: Fázis 6 – QA kör (mobil, Lighthouse, billentyűzetes végigjárás, tartalmi szúrópróba), javítások, pitch-segédlet (mi változott és miért).
 - GitHub Actions indítása: `gh api -X POST repos/jobaitamas/magveto/actions/workflows/scrape.yml/dispatches -f ref=main -f 'inputs[...]=...'` (a `gh workflow run` GraphQL miatt nem megy).

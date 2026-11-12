@@ -1,0 +1,13 @@
+---
+// E-mail-cím, amelyet a böngésző rak össze (a HTML forrásban nincs benne egyben → spamvédelem).
+import type { Mail } from '../lib/contact';
+const { mail } = Astro.props as { mail: Mail };
+---
+<a class="mail" data-u={mail.u.split('').reverse().join('')} data-d={mail.d} href="#">e-mail-cím megjelenítése</a>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('a.mail[data-u]').forEach((a) => {
+    const addr = a.dataset.u!.split('').reverse().join('') + '@' + a.dataset.d;
+    a.href = 'mailto:' + addr; a.textContent = addr; a.removeAttribute('data-u');
+  });
+</script>
+<style>.mail { overflow-wrap: anywhere; }</style>

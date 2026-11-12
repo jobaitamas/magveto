@@ -1,0 +1,25 @@
+---
+// Gyűjtőoldal a kiadó meglévő besorolása szerint (IA-5: nem szűrő, a besorolás hiányos).
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import { categories, bookById, type Category } from '../../lib/data';
+export function getStaticPaths() {
+  return categories.filter((c) => c.bookIds.length).map((c) => ({ params: { slug: c.slug }, props: { cat: c } }));
+}
+const { cat } = Astro.props as { cat: Category };
+const list = cat.bookIds.map((id) => bookById.get(id)!).filter(Boolean).sort((a, b) => (a.sortKey < b.sortKey ? 1 : -1));
+---
+<Base title={cat.name}>
+  <div class="wrap pg">
+    <nav class="crumb" aria-label="Morzsamenü"><ol><li><a href="/">Kezdőlap</a></li><li><a href="/kiadvanyok">Kiadványok</a></li><li aria-current="page">{cat.name}</li></ol></nav>
+    <p class="eyebrow">{cat.kind === 'sorozat' ? 'Sorozat, életmű' : 'A kiadó besorolása'}</p>
+    <h1 class="pg__h1">{cat.name}</h1>
+    <p class="meta pg__note">{list.length} kiadvány. A gyűjtés a magveto.hu meglévő besorolását tükrözi, amely nem minden könyvre terjed ki.</p>
+    <ul class="grid-books" role="list">{list.map((b) => <li><BookCard book={b} showPrice headingLevel="h2" /></li>)}</ul>
+  </div>
+</Base>
+<style>
+  .pg { padding-top: var(--s-2); }
+  .pg__h1 { font-size: var(--t-h1); margin: var(--s-2) 0 var(--s-3); }
+  .pg__note { max-width: 60ch; margin-bottom: var(--s-6); }
+</style>

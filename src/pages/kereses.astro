@@ -1,0 +1,86 @@
+---
+// Keresés – találati lista (IA 4.6, Flow 3). A keresés a böngészőben fut (src/scripts/search.ts).
+import Base from '../layouts/Base.astro';
+import { home } from '../lib/data';
+---
+<Base title="Keresés">
+  <div class="wrap pg">
+    <h1 class="pg__h1" data-title>Keresés</h1>
+    <p class="meta" aria-live="polite" data-summary>Írj be egy szerzőnevet, címet vagy ISBN-számot a fejléc keresőjébe.</p>
+
+    <div class="tabs" role="group" aria-label="Találatok szűrése" data-tabs hidden>
+      <button type="button" aria-pressed="true" data-tab="all">Mind <span data-n="all"></span></button>
+      <button type="button" aria-pressed="false" data-tab="author">Szerzők <span data-n="author"></span></button>
+      <button type="button" aria-pressed="false" data-tab="book">Kiadványok <span data-n="book"></span></button>
+    </div>
+
+    <section aria-labelledby="h-a" data-sec="author" hidden><h2 id="h-a" class="res__h">Szerzők</h2><ul class="res res--a" role="list" data-list="author"></ul></section>
+    <section aria-labelledby="h-b" data-sec="book" hidden><h2 id="h-b" class="res__h">Kiadványok</h2><ul class="res" role="list" data-list="book"></ul>
+      <button class="btn btn--ghost" type="button" data-more hidden>Továbbiak</button></section>
+
+    <section class="none" data-none hidden aria-labelledby="h-n">
+      <h2 id="h-n" class="res__h">Nincs találat</h2>
+      <ul class="tips">
+        <li>Ékezet nélkül is kereshetsz: „esterhazy”.</li>
+        <li>Próbálj rövidebb kifejezést vagy csak a vezetéknevet.</li>
+        <li>Böngészd a <a href="/kiadvanyok">Kiadványokat</a> vagy a <a href="/szerzok">Szerzőket</a>.</li>
+      </ul>
+      <h3 class="res__sub">A Magvető toplistája</h3>
+      <ol class="top">{home.toplist.map((t) => <li>{t.book ? <a href={`/konyvek/${t.book.slug}`}>{t.book.title}</a> : t.title} <span class="muted">– {t.authorRef?.name ?? t.author}</span></li>)}</ol>
+    </section>
+  </div>
+</Base>
+<script>
+  import { loadIndex, search, highlight } from '../scripts/search';
+  const q = new URLSearchParams(location.search).get('q')?.trim() || '';
+  const $ = <T extends Element>(s: string) => document.querySelector<T>(s)!;
+  const PAGE = 30; let shownBooks = PAGE; let books: any[] = []; let authors: any[] = [];
+  const row = (r: any) => `<li><a class="res__i" href="${r.href}">${r.img ? `<img src="${r.img}" alt="" width="56" height="84" loading="lazy" class="${r.type === 'author' ? 'round' : ''}">` : `<span class="ph ${r.type === 'author' ? 'round' : ''}" aria-hidden="true"></span>`}<span><span class="res__t">${highlight(r.title, q)}</span><span class="res__s">${highlight(r.sub || '', q)}</span></span></a></li>`;
+  function draw() {
+    $('[data-list="author"]').innerHTML = authors.map(row).join('');
+    $('[data-list="book"]').innerHTML = books.slice(0, shownBooks).map(row).join('');
+    $<HTMLButtonElement>('[data-more]').hidden = shownBooks >= books.length;
+  }
+  if (q) {
+    document.title = `„${q}” – Keresés – Magvető Kiadó (koncepció)`;
+    $('[data-title]').textContent = `Keresés: „${q}”`;
+    loadIndex().then((ms) => {
+      ({ authors, books } = search(ms, q));
+      const total = authors.length + books.length;
+      $('[data-summary]').textContent = total ? `${authors.length} szerző és ${books.length} kiadvány` : `Nincs találat erre: „${q}”.`;
+      $<HTMLElement>('[data-none]').hidden = total > 0;
+      $<HTMLElement>('[data-tabs]').hidden = total === 0;
+      $('[data-n="all"]').textContent = `(${total})`; $('[data-n="author"]').textContent = `(${authors.length})`; $('[data-n="book"]').textContent = `(${books.length})`;
+      $<HTMLElement>('[data-sec="author"]').hidden = !authors.length;
+      $<HTMLElement>('[data-sec="book"]').hidden = !books.length;
+      draw();
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-tab]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      const t = b.dataset.tab;
+      $<HTMLElement>('[data-sec="author"]').hidden = !authors.length || t === 'book';
+      $<HTMLElement>('[data-sec="book"]').hidden = !books.length || t === 'author';
+    }));
+    $('[data-more]').addEventListener('click', () => { shownBooks += PAGE; draw(); });
+  }
+</script>
+<style>
+  .pg { padding-top: var(--s-7); }
+  .pg__h1 { font-size: var(--t-h1); margin-bottom: var(--s-2); }
+  .tabs { display: flex; gap: var(--s-2); margin: var(--s-5) 0; border-bottom: var(--rule); }
+  .tabs button { min-height: 44px; padding: 0 var(--s-3); background: none; border: 0; border-bottom: 2px solid transparent; font: 500 var(--t-small)/1 var(--f-sans); cursor: pointer; margin-bottom: -1px; }
+  .tabs button[aria-pressed="true"] { border-bottom-color: var(--c-seal); color: var(--c-seal); }
+  .res__h { font-size: var(--t-h2); margin: var(--s-6) 0 var(--s-3); }
+  .res { list-style: none; margin: 0 0 var(--s-5); padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0 var(--s-6); }
+  .res :global(.res__i) { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-3) 0; border-bottom: var(--rule); text-decoration: none; }
+  .res :global(img), .res :global(.ph) { width: 56px; aspect-ratio: 2/3; height: auto; object-fit: cover; background: var(--c-shade); }
+  .res :global(.round) { aspect-ratio: 1; border-radius: 50%; }
+  .res :global(.res__t) { display: block; font: 500 1.125rem/1.25 var(--f-serif); }
+  .res :global(.res__i:hover .res__t) { color: var(--c-seal); }
+  .res :global(.res__s) { display: block; font: 400 var(--t-micro)/1.4 var(--f-sans); color: var(--c-graphite); }
+  .res :global(mark) { background: #F1DDD3; color: inherit; }
+  .tips { padding-left: 1.2em; } .tips li { margin: 4px 0; }
+  .res__sub { font-size: var(--t-h3); margin: var(--s-6) 0 var(--s-3); }
+  .top { padding-left: 1.4em; columns: 2; } .top li { margin: 6px 0; break-inside: avoid; }
+  @media (max-width: 600px) { .top { columns: 1; } }
+</style>

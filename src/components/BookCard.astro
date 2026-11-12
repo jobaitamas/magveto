@@ -2,8 +2,8 @@
 // Könyvkártya – az egyetlen könyv-kártyatípus az egész oldalon (következetesség).
 import type { Book } from '../lib/data';
 import Cover from './Cover.astro';
-import { price } from '../lib/text';
-interface Props { book: Book; showPrice?: boolean; headingLevel?: 'h3' | 'h4' }
+import { price, huDate } from '../lib/text';
+interface Props { book: Book; showPrice?: boolean; headingLevel?: 'h2' | 'h3' | 'h4' }
 const { book, showPrice = false, headingLevel = 'h3' } = Astro.props;
 const H = headingLevel;
 ---
@@ -14,18 +14,6 @@ const H = headingLevel;
   </a>
   {book.authors.length > 0 && <p class="bc__a">{book.authors.map((a) => a.name).join(', ')}</p>}
   {book.subtitle && <p class="bc__s">{book.subtitle}</p>}
-  {book.forthcoming && <p class="bc__f">Előkészületben{book.expected ? ` · ${book.expected.replace('-', '. ')}.` : ''}</p>}
+  {book.forthcoming && <p class="bc__f">Előkészületben{book.expected ? ` · ${huDate(book.expected)}` : ''}</p>}
   {showPrice && !book.forthcoming && book.price && <p class="bc__p">{price(book.price)}</p>}
 </article>
-<style>
-  .bc { min-width: 0; }
-  .bc__link { display: block; text-decoration: none; }
-  .bc__link :global(.cover) { transition: transform .25s var(--ease); }
-  .bc__link:hover :global(.cover) { transform: translateY(-3px); }
-  .bc__link:hover .bc__t { color: var(--c-seal); }
-  .bc__t { font-size: 1.125rem; line-height: 1.2; margin-top: var(--s-3); }
-  .bc__a { margin: 4px 0 0; font: 500 var(--t-micro)/1.35 var(--f-sans); color: var(--c-graphite); }
-  .bc__s { margin: 2px 0 0; font-style: italic; font-size: 0.9375rem; line-height: 1.3; color: var(--c-graphite); }
-  .bc__f { margin: 6px 0 0; font: 600 var(--t-micro)/1.2 var(--f-sans); color: var(--c-seal); }
-  .bc__p { margin: 6px 0 0; font: 500 var(--t-micro)/1.2 var(--f-sans); }
-</style>

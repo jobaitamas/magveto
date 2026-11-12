@@ -1,0 +1,85 @@
+---
+// Szerzők (IA 4.4): magyar ábécé szerinti betűcsoportok, azonnali, ékezetfüggetlen szűrés.
+import Base from '../../layouts/Base.astro';
+import { authors } from '../../lib/data';
+import { HU_ALPHABET, fold, excerpt } from '../../lib/text';
+const groups = new Map<string, typeof authors>();
+for (const a of authors) { const k = HU_ALPHABET.includes(a.letter) ? a.letter : '#'; if (!groups.has(k)) groups.set(k, []); groups.get(k)!.push(a); }
+const letters = [...HU_ALPHABET, '#'];
+const idOf = (l: string) => 'betu-' + (l === '#' ? 'egyeb' : fold(l));
+---
+<Base title="Szerzők" description={`A Magvető ${authors.length} szerzője.`}>
+  <div class="wrap pg">
+    <header class="pg__head"><h1>Szerzők</h1><p class="meta" aria-live="polite" data-count>{authors.length} szerző</p></header>
+
+    <div class="flt">
+      <label for="szuro" class="sr-only">Szűrés név szerint</label>
+      <input id="szuro" type="search" placeholder="Szűrés név szerint, pl. bodor" autocomplete="off" data-filter />
+    </div>
+
+    <nav class="abc" aria-label="Ugrás betűre">
+      <ul role="list">
+        {letters.map((l) => groups.has(l)
+          ? <li><a href={`#${idOf(l)}`} data-letter={l}>{l}</a></li>
+          : (l !== '#' && <li><span aria-disabled="true" title="Nincs szerző ezzel a betűvel">{l}</span></li>))}
+      </ul>
+    </nav>
+
+    {letters.filter((l) => groups.has(l)).map((l) => (
+      <section class="grp" id={idOf(l)} aria-labelledby={`${idOf(l)}-h`} data-group={l}>
+        <h2 id={`${idOf(l)}-h`} class="grp__h">{l === '#' ? 'Egyéb' : l}</h2>
+        <ul class="grp__list" role="list">
+          {groups.get(l)!.map((a) => (
+            <li data-name={fold(a.name + ' ' + a.sortName)}>
+              <a class="au__n" href={`/szerzok/${a.slug}`}>{a.sortName}</a>
+              {a.years && <span class="au__y"> ({a.years})</span>}
+              {a.short && <p class="au__s">{excerpt(a.short, 160)}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    <p class="meta" data-empty hidden>Nincs a szűrésnek megfelelő szerző. Próbáld rövidebben, vagy használd a fejléc keresőjét.</p>
+  </div>
+</Base>
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-filter]')!;
+  const count = document.querySelector<HTMLElement>('[data-count]')!;
+  const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+  const total = document.querySelectorAll('[data-name]').length;
+  const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  input.addEventListener('input', () => {
+    const q = fold(input.value.trim());
+    let n = 0;
+    document.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => {
+      let vis = 0;
+      g.querySelectorAll<HTMLElement>('[data-name]').forEach((li) => { const ok = !q || li.dataset.name!.includes(q); li.hidden = !ok; if (ok) vis++; });
+      g.hidden = vis === 0; n += vis;
+      const link = document.querySelector<HTMLElement>(`[data-letter="${g.dataset.group}"]`); if (link) link.classList.toggle('off', vis === 0);
+    });
+    count.textContent = q ? `${n} / ${total} szerző` : `${total} szerző`;
+    empty.hidden = n > 0;
+  });
+</script>
+<style>
+  .pg { padding-top: var(--s-7); }
+  .pg__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+  .pg__head h1 { font-size: var(--t-h1); }
+  .flt { margin: var(--s-5) 0 var(--s-4); max-width: 420px; }
+  .flt input { width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--c-control); border-radius: var(--radius); background: var(--c-sheet); font: 400 var(--t-body)/1 var(--f-sans); }
+  .flt input:focus { outline: none; border-color: var(--c-seal); box-shadow: 0 0 0 3px #EBD3C9; }
+  .abc { position: sticky; top: 0; z-index: 5; background: var(--c-paper); border-block: var(--rule); margin-bottom: var(--s-5); }
+  .abc ul { list-style: none; display: flex; flex-wrap: wrap; gap: 2px; padding: var(--s-2) 0; margin: 0; }
+  .abc a, .abc span { display: inline-grid; place-items: center; min-width: 36px; min-height: 36px; font: 600 var(--t-small)/1 var(--f-sans); text-decoration: none; border-radius: 2px; }
+  .abc a:hover { background: var(--c-ink); color: var(--c-paper); }
+  .abc a.off { color: var(--c-control); pointer-events: none; }
+  .abc span { color: #A9A397; }
+  @media (max-width: 700px) { .abc ul { flex-wrap: nowrap; overflow-x: auto; } }
+  .grp { padding: var(--s-5) 0; border-bottom: var(--rule); scroll-margin-top: 64px; }
+  .grp__h { font-size: var(--t-h2); margin-bottom: var(--s-4); }
+  .grp__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-4) var(--s-6); }
+  .au__n { font: 500 1.1875rem/1.25 var(--f-serif); text-decoration: none; }
+  .au__n:hover { text-decoration: underline; }
+  .au__y { font: 400 var(--t-micro)/1 var(--f-sans); color: var(--c-graphite); }
+  .au__s { margin: 4px 0 0; font-size: var(--t-small); line-height: 1.45; color: var(--c-graphite); }
+</style>

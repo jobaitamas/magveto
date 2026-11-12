@@ -1,0 +1,34 @@
+---
+// Sajtótétel aloldal: kivonat, forrás, link az eredeti cikkre.
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import { press, bookById, type PressItem } from '../../lib/data';
+import { huDate } from '../../lib/text';
+export function getStaticPaths() { return press.map((p) => ({ params: { slug: p.slug }, props: { item: p } })); }
+const { item: p } = Astro.props as { item: PressItem };
+const b = p.bookId ? bookById.get(p.bookId) : undefined;
+---
+<Base title={p.title} description={p.excerpt}>
+  <div class="wrap">
+    <nav class="crumb" aria-label="Morzsamenü"><ol><li><a href="/">Kezdőlap</a></li><li><a href="/sajtoszoba">Sajtószoba</a></li><li aria-current="page">{p.title}</li></ol></nav>
+    <div class="art">
+      <article>
+        <p class="eyebrow">{p.source}</p>
+        <h1 class="art__h">{p.title}</h1>
+        <p class="meta"><time datetime={p.date}>{huDate(p.date)}</time>{p.sourceLine && <> · {p.sourceLine}</>}</p>
+        <div class="prose art__body" set:html={p.bodyHtml} />
+        {p.originalUrl && <a class="btn ext" href={p.originalUrl} rel="noopener">A teljes cikk: {p.source || 'eredeti forrás'}</a>}
+        <p class="meta art__note">A kivonat a magveto.hu Sajtószobájából származik; a teljes cikk az eredeti forrásnál olvasható.</p>
+      </article>
+      {b && <aside class="art__book" aria-label="Kapcsolódó kiadvány"><p class="meta">Kapcsolódó kiadvány</p><BookCard book={b} showPrice /></aside>}
+    </div>
+  </div>
+</Base>
+<style>
+  .art { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-8); align-items: start; }
+  @media (max-width: 800px) { .art { grid-template-columns: 1fr; } .art__book { max-width: 200px; } }
+  .art__h { font-size: var(--t-h1); line-height: 1.08; margin: var(--s-2) 0 var(--s-3); max-width: 24ch; }
+  .art__body { margin: var(--s-6) 0; font-size: 1.125rem; line-height: 1.65; }
+  .art__note { margin-top: var(--s-4); }
+  .art__book { position: sticky; top: var(--s-5); }
+</style>

@@ -1,0 +1,138 @@
+---
+// Kiadványok (IA 4.2, IA-5): rendezés + állapotszűrő, műfajszűrő nélkül.
+// Az első 24 könyv HTML-ben érkezik (JS nélkül is működik), a többit a böngésző tölti be a books-list.json-ból.
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import { booksNewest, categories } from '../../lib/data';
+const first = booksNewest.slice(0, 24);
+const total = booksNewest.length;
+const cats = categories.filter((c) => c.bookIds.length > 0).sort((a, b) => b.bookIds.length - a.bookIds.length);
+---
+<Base title="Kiadványok" description={`A Magvető ${total} kiadványa.`}>
+  <div class="wrap pg">
+    <header class="pg__head">
+      <h1>Kiadványok</h1>
+      <p class="meta" aria-live="polite" data-count>{total} kiadvány</p>
+    </header>
+
+    <form class="tools" data-tools>
+      <fieldset class="tools__f">
+        <legend class="tools__l">Állapot</legend>
+        <label class="tog"><input type="checkbox" name="allapot" value="megjelent" /> <span>Megjelent</span></label>
+        <label class="tog"><input type="checkbox" name="allapot" value="elokeszuletben" /> <span>Előkészületben</span></label>
+        <label class="tog"><input type="checkbox" name="ekonyv" value="1" /> <span>E-könyvben is</span></label>
+      </fieldset>
+      <div class="tools__sort">
+        <label class="tools__l" for="rendezes">Rendezés</label>
+        <select id="rendezes" name="rendezes">
+          <option value="uj">Legújabb elöl</option>
+          <option value="cim">Cím szerint (A–Z)</option>
+          <option value="szerzo">Szerző szerint (A–Z)</option>
+        </select>
+      </div>
+      <noscript><button class="btn" type="submit">Alkalmaz</button></noscript>
+    </form>
+
+    <ul class="grid-books" role="list" data-grid>
+      {first.map((b) => <li><BookCard book={b} showPrice headingLevel="h2" /></li>)}
+    </ul>
+    <div class="more">
+      <button class="btn btn--ghost" type="button" data-more>Továbbiak betöltése</button>
+      <p class="meta" data-shown>{first.length} / {total}</p>
+    </div>
+
+    <details class="cats">
+      <summary>A kiadó besorolása szerint böngészés</summary>
+      <p class="meta">A kategóriák a magveto.hu meglévő besorolását tükrözik. A besorolás hiányos (nem minden könyv szerepel benne), ezért ezek nem szűrők, hanem gyűjtőoldalak.</p>
+      <ul role="list">{cats.map((c) => <li><a class="chip" href={`/kategoriak/${c.slug}`}>{c.name} <span class="muted">&nbsp;{c.bookIds.length}</span></a></li>)}</ul>
+    </details>
+  </div>
+</Base>
+
+<script>
+  import { collator } from '../../lib/text';
+  type Row = { s: string; t: string; st: string; a: string; so: string; c: string | null; h: number; p: string; f: boolean; e: boolean; n: number; alt: string; ex: string };
+  const form = document.querySelector<HTMLFormElement>('[data-tools]')!;
+  const grid = document.querySelector<HTMLUListElement>('[data-grid]')!;
+  const moreBtn = document.querySelector<HTMLButtonElement>('[data-more]')!;
+  const shown = document.querySelector<HTMLElement>('[data-shown]')!;
+  const count = document.querySelector<HTMLElement>('[data-count]')!;
+  const PAGE = 24;
+  let rows: Row[] = [];
+  let list: Row[] = [];
+  let limit = PAGE;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  function card(r: Row) {
+    const cover = r.c
+      ? `<img class="cover" src="${r.c}" width="360" height="${r.h}" alt="${esc(r.alt)}" loading="lazy" decoding="async">`
+      : `<div class="cover cover--empty" role="img" aria-label="${esc(r.alt)}"><span class="cover__t">${esc(r.t)}</span><span class="cover__a">${esc(r.a)}</span></div>`;
+    return `<li><article class="bc"><a class="bc__link" href="/konyvek/${r.s}">${cover}<h2 class="bc__t">${esc(r.t)}</h2></a>`
+      + (r.a ? `<p class="bc__a">${esc(r.a)}</p>` : '') + (r.st ? `<p class="bc__s">${esc(r.st)}</p>` : '')
+      + (r.f ? `<p class="bc__f">Előkészületben${r.ex ? ' · ' + esc(r.ex) : ''}</p>` : (r.p ? `<p class="bc__p">${esc(r.p)}</p>` : ''))
+      + `</article></li>`;
+  }
+  function readState() {
+    const p = new URLSearchParams(location.search);
+    const st = p.getAll('allapot');
+    form.querySelectorAll<HTMLInputElement>('input[name="allapot"]').forEach((i) => (i.checked = st.includes(i.value)));
+    form.querySelector<HTMLInputElement>('input[name="ekonyv"]')!.checked = p.get('ekonyv') === '1';
+    (form.querySelector('select') as HTMLSelectElement).value = p.get('rendezes') || 'uj';
+    limit = Math.max(PAGE, Number(p.get('db')) || PAGE);
+  }
+  function writeState() {
+    const p = new URLSearchParams();
+    form.querySelectorAll<HTMLInputElement>('input[name="allapot"]:checked').forEach((i) => p.append('allapot', i.value));
+    if (form.querySelector<HTMLInputElement>('input[name="ekonyv"]')!.checked) p.set('ekonyv', '1');
+    const s = (form.querySelector('select') as HTMLSelectElement).value; if (s !== 'uj') p.set('rendezes', s);
+    if (limit > PAGE) p.set('db', String(limit));
+    history.replaceState(null, '', p.toString() ? `?${p}` : location.pathname);
+  }
+  function apply() {
+    const st = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="allapot"]:checked')).map((i) => i.value);
+    const eb = form.querySelector<HTMLInputElement>('input[name="ekonyv"]')!.checked;
+    const sort = (form.querySelector('select') as HTMLSelectElement).value;
+    list = rows.filter((r) => (st.length === 0 || (st.includes('megjelent') && !r.f) || (st.includes('elokeszuletben') && r.f)) && (!eb || r.e));
+    if (sort === 'cim') list.sort((a, b) => collator.compare(a.t, b.t));
+    else if (sort === 'szerzo') list.sort((a, b) => collator.compare(a.so || 'zzz', b.so || 'zzz') || collator.compare(a.t, b.t));
+    else list.sort((a, b) => a.n - b.n);
+    render();
+  }
+  function render() {
+    grid.innerHTML = list.slice(0, limit).map(card).join('');
+    const n = Math.min(limit, list.length);
+    shown.textContent = `${n} / ${list.length}`;
+    count.textContent = `${list.length} kiadvány`;
+    moreBtn.hidden = n >= list.length;
+  }
+  fetch('/books-list.json').then((r) => r.json()).then((data: Row[]) => {
+    rows = data; readState(); apply();
+    form.addEventListener('change', () => { limit = PAGE; apply(); writeState(); });
+    moreBtn.addEventListener('click', () => {
+      const firstNew = limit; limit += PAGE; render(); writeState();
+      grid.querySelectorAll<HTMLAnchorElement>('li a')[firstNew]?.focus();  // fókusz az első új elemre (billentyűzet)
+    });
+  });
+</script>
+
+<style>
+  .pg { padding-top: var(--s-7); }
+  .pg__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+  .pg__head h1 { font-size: var(--t-h1); }
+  .tools { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--s-4); margin: var(--s-5) 0 var(--s-6); padding: var(--s-4) 0; border-block: var(--rule); }
+  .tools__f { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+  .tools__l { font: 600 var(--t-micro)/1 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--c-graphite); margin-right: var(--s-2); padding: 0; }
+  .tog { position: relative; }
+  .tog input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .tog span { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--s-4); border: 1px solid var(--c-control); border-radius: 99px; font: 500 var(--t-small)/1 var(--f-sans); }
+  .tog input:checked + span { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
+  .tog input:checked + span::before { content: "✓"; margin-right: 6px; }
+  .tog input:focus-visible + span { box-shadow: var(--focus); }
+  .tools__sort { display: flex; align-items: center; gap: var(--s-2); }
+  select { min-height: 44px; padding: 0 36px 0 12px; border: 1.5px solid var(--c-control); border-radius: var(--radius); background: var(--c-sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231B1A17' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; font: 500 var(--t-small)/1 var(--f-sans); }
+  .grid-books { list-style: none; margin: 0; padding: 0; }
+  .more { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); margin: var(--s-7) 0; }
+  .cats { border-top: var(--rule-strong); padding-top: var(--s-4); }
+  .cats summary { font: 500 var(--t-h3)/1.3 var(--f-serif); cursor: pointer; }
+  .cats ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin: var(--s-3) 0 0; }
+</style>

@@ -103,7 +103,12 @@ export const books: Book[] = tmpBooks.map(({ b, base }) => {
   };
 });
 export const bookById = new Map(books.map((b) => [b.id, b]));
-export const booksNewest = [...books].sort((a, b) => (a.sortKey < b.sortKey ? 1 : -1));
+// „Legújabb elöl”: a megjelent könyvek a megjelenés szerint csökkenő sorrendben, az előkészületben lévők a lista végén
+// (a forrásoldal Kiadványok listája is a megjelent könyvekkel kezd; az előkészületben lévők az Állapot szűrővel érhetők el).
+export const booksNewest = [
+  ...books.filter((b) => !b.forthcoming).sort((a, b) => (a.sortKey < b.sortKey ? 1 : -1)),
+  ...books.filter((b) => b.forthcoming).sort((a, b) => (a.sortKey < b.sortKey ? -1 : 1)),
+];
 
 // szerzők művei: csak a ténylegesen leszedett adatlapok linkelhetők
 for (const a of authors) {
