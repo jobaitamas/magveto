@@ -80,6 +80,8 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 | 2026-11-12 | Logó: kell a „Magvető” felirat is; a régi oldali logót (`images/logo.jpg`, 295×97) a scraper letölti → vektorizálni; ha a minősége kevés, nyitott tétel marad | Tamás |
 | 2026-11-12 | Határidő megerősítve: 2026-11-19. Stack: Astro, Supabase nélkül | Tamás |
 | 2026-11-12 | Repo: https://github.com/jobaitamas/magveto (push-hoz a Claude GitHub App telepítése kell a repóra) | Tamás |
+| 2026-11-12 | Első leszedés kész (GitHub Actions): 325 könyv (59 „core” = kezdőlap + 50 legfrissebb, + a core-szerzők összes műve), 252 szerző (176 fotóval, 148 hosszú bióval), 50 sajtótétel, 31 kategória; 74 hiba, főleg hiányzó (404) képfájl a forrásszerveren. Minden szerző műlistájában összesen 687 mű van | Claude |
+| 2026-11-12 | Logó-felirat: a régi `logo.jpg` 295×97 px, pontos vektorizálás nem lehetséges → újraszedés a legközelebbi ingyenes betűvel: **Montserrat 500, nagybetű, ritkítva, két sor („MAGVETŐ / KIADÓ”)**. Ez rekonstrukció, nem az eredeti; a pitchnél jelezni / az eredeti vektort a kiadótól kérni | Claude |
 | 2026-11-12 | Betűk: Google Fonts helyett önhosztolt @fontsource csomagok (npm-ről elérhetők, gyorsabb, GDPR-barátabb) | Claude |
 
 ## 7b. Forrásoldal-szerkezet (felderítve, a scraperhez)
@@ -95,16 +97,17 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 
 ## 8. Nyitott kérdések
 - Claude GitHub App telepítése a repóra (push blokkolva nélküle)
-- Logó-felirat vektorizálása a régi logóból (a scraper letölti)
+- IA v1 döntési kérdései (ia/ia-wireframes-v1.html, 7. fejezet): scope-on kívüli menüpontok, aloldal nélküli művek (+362 mű leszedése?), lejárt események, Líra-bannerek, szűrőcsoportok, tipográfiai igazítás
 - Tipográfiai normalizálás engedélye (,, → „, szóköz, kis-nagybetű, névsorrend a kártyákon) – szöveg szóra pontosan marad
 - Könyv-aloldalak köre: a scraper első futása után számok alapján döntünk (core = kezdőlap + 50 legfrissebb; + a szerzőik összes műve?)
 
 ## 9. Státusz
 - Fázis 0: kész, kivéve repo/GitHub.
-- Fázis 1 (leszedés): scraper + workflow kész, repóra vár.
+- Fázis 1 (leszedés): kész (lásd döntésnapló). Kategória-címkék teljes bejárása folyamatban/kész (`--only-categories`).
 - Fázis 2 (brand): **jóváhagyva – A „Papír”**. Részletes design system a Fázis 4-ben.
-- Fázis 3 (IA + wireframe): indul.
+- Fázis 3 (IA + wireframe): v1 kész → `ia/ia-wireframes-v1.html` → **Tamás jóváhagyására vár** (6 kérdés).
 
 ## 10. Következő lépés
-- Tamás: Claude GitHub App telepítése a `jobaitamas/magveto` repóra.
-- Claude: repóba push → scrape workflow futtatása → eredmény ellenőrzése → Fázis 3 (IA + wireframe).
+- Tamás: IA v1 jóváhagyás + 6 kérdés.
+- Claude: utána Fázis 4 (design system + kulcsképernyők a Papír irányban), majd fejlesztés.
+- GitHub Actions indítása: `gh api -X POST repos/jobaitamas/magveto/actions/workflows/scrape.yml/dispatches -f ref=main -f 'inputs[...]=...'` (a `gh workflow run` GraphQL miatt nem megy).
