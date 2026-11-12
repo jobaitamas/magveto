@@ -1,5 +1,5 @@
 {
- "books": 325,
+ "books": 699,
  "coreBooks": 59,
  "authors": 252,
  "authorIndex": 252,
@@ -8,11 +8,14 @@
  "booksWithoutDescription": [
   "139533903",
   "1443374",
-  "2391768",
+  "2092247",
+  "2297366",
+  "500427",
+  "4585",
   "397658",
   "2392123",
-  "500427",
-  "2391813"
+  "2391813",
+  "2391768"
  ],
  "booksWithUnresolvedAuthor": [
   "139491948",
@@ -20,7 +23,8 @@
   "139534193",
   "139534349",
   "139533087",
-  "139533086"
+  "139533086",
+  "444268"
  ],
  "authorsWithPhoto": 176,
  "authorsWithBio": 148,
@@ -28,6 +32,14 @@
  "errors": [
   {
    "url": "https://magveto.hu/media/kiadok/photo/139537270.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/photo/139537125.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4691.jpg",
    "status": 404
   },
   {
@@ -39,19 +51,15 @@
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4691.jpg",
-   "status": 404
-  },
-  {
    "url": "https://magveto.hu/media/kiadok/szerzok/2021/4517.jpg",
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2024/1528.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/6.jpg",
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2023/6.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/1528.jpg",
    "status": 404
   },
   {
@@ -63,11 +71,11 @@
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5077.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5327.jpg",
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5327.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5077.jpg",
    "status": 404
   },
   {
@@ -127,6 +135,10 @@
    "status": 404
   },
   {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5083.jpg",
+   "status": 404
+  },
+  {
    "url": "https://magveto.hu/media/kiadok/szerzok/2026/2392.jpg",
    "status": 404
   },
@@ -135,15 +147,11 @@
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5083.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2019/4139.jpg",
    "status": 404
   },
   {
    "url": "https://magveto.hu/media/kiadok/szerzok/2021/4407.jpg",
-   "status": 404
-  },
-  {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2019/4139.jpg",
    "status": 404
   },
   {
@@ -255,11 +263,11 @@
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4428.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4599.jpg",
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4599.jpg",
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4428.jpg",
    "status": 404
   },
   {
@@ -303,10 +311,6 @@
    "status": 404
   },
   {
-   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4193.jpg",
-   "status": 404
-  },
-  {
    "url": "https://magveto.hu/media/kiadok/szerzok/2025/1.jpg",
    "status": 404
   },
@@ -316,13 +320,17 @@
   },
   {
    "url": "https://magveto.hu/media/kiadok/szerzok/2021/359.jpg",
-   "error": "cannot identify image file <_io.BytesIO object at 0x701d03873790>"
+   "error": "cannot identify image file <_io.BytesIO object at 0x71aca67c00e0>"
   },
   {
    "url": "https://magveto.hu/media/kiadok/szerzok/2025/4727.jpg",
    "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4193.jpg",
+   "status": 404
   }
  ],
- "errorCount": 74,
- "scrapedAt": "2026-11-12T17:49:43Z"
+ "errorCount": 75,
+ "scrapedAt": "2026-11-12T18:18:35Z"
 }
