@@ -80,6 +80,6 @@ const idOf = (l: string) => 'betu-' + (l === '#' ? 'egyeb' : fold(l));
   .grp__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-4) var(--s-6); }
   .au__n { font: 500 1.1875rem/1.25 var(--f-serif); text-decoration: none; }
   .au__n:hover { text-decoration: underline; }
-  .au__y { font: 400 var(--t-micro)/1 var(--f-sans); color: var(--c-graphite); }
+  .au__y { font: 400 var(--t-micro)/1 var(--f-sans); color: var(--c-graphite); white-space: nowrap; }
   .au__s { margin: 4px 0 0; font-size: var(--t-small); line-height: 1.45; color: var(--c-graphite); }
 </style>
