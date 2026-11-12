@@ -264,5 +264,22 @@
   "src": "https://www.youtube.com/embed/GavKZKqqQuA?si=UyWRLOshekJQ9xtE",
   "title": "YouTube video player"
  },
- "newsletterUrl": "http://hir.lira.hu/dm/subs/lira_feliratkozas.html"
+ "newsletterUrl": "http://hir.lira.hu/dm/subs/lira_feliratkozas.html",
+ "banners": [
+  {
+   "href": "https://www.lira.hu/hu/konyv/szepirodalom/felnottirodalom/vers-drama/isten-1",
+   "imgSrc": "https://kiadok.lira.hu/media/kiadok/magveto/banner/202605_27_elsofelev_versek_270x270.gif",
+   "img": "/media/banners/banner-1.gif"
+  },
+  {
+   "href": "https://www.lira.hu/hu/konyv/szepirodalom/novellak-elbeszelesek/kankan-az-uvegpadlon-1",
+   "imgSrc": "https://kiadok.lira.hu/media/kiadok/magveto/banner/2026_06_03_konyvhet_novellak_270x270.gif",
+   "img": "/media/banners/banner-2.gif"
+  },
+  {
+   "href": "https://www.lira.hu/hu/konyv/szepirodalom/balkan-nagyoperett-1",
+   "imgSrc": "https://kiadok.lira.hu/media/kiadok/magveto/banner/2026_06_10_konyvhet_regenyek_270x270.gif",
+   "img": "/media/banners/banner-3.gif"
+  }
+ ]
 }
