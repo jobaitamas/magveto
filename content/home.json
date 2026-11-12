@@ -1,0 +1,268 @@
+{
+ "carousel": [
+  {
+   "bookId": "139535966",
+   "title": "Talajvíz és irodalom",
+   "author": "Závada Pál",
+   "authorId": "48",
+   "teaser": "Závada Pál új regénye történelmünk legviharosabb évtizedeibe vezet: a 20. század derekának magyar irodalmi közegében játszódik. Fősodrában Németh László - valaha nagy hatású, de újra..."
+  },
+  {
+   "bookId": "139536166",
+   "title": "A tenger kapui",
+   "author": "Rakovszky Zsuzsa",
+   "authorId": null,
+   "teaser": "A mozaikos családregényben 1944-től kezdve hét évtizeden keresztül követhetjük végig, hogy mi történik zömmel női hőseinkkel. Anyák és lányok, feleségek és barátnők, unokanővérek..."
+  },
+  {
+   "bookId": "139535327",
+   "title": "Holnap elárul",
+   "author": "Tamás Zsuzsa",
+   "authorId": "387",
+   "teaser": "Távoli világok és egymást tükröző történetek találkoznak Tamás Zsuzsa kötetében. Az egyik világegy szibériai remetenő alakja köré épül: álomszerű párbeszéd, amelynek létrejötte..."
+  },
+  {
+   "bookId": "139535912",
+   "title": "Glifa",
+   "author": "Smith, Ali",
+   "authorId": null,
+   "teaser": "A család szinte mindig azt jelenti, hogy valaki valahol nem tartozik hozzá. Petra és húga, Paca gyerekkorukban elválaszthatatlanok voltak. Amikor édesanyjuk váratlanul meghalt, különböző megküzdési..."
+  },
+  {
+   "bookId": "139536239",
+   "title": "Nincs varázslatosabb",
+   "author": "Pérez-Carbonell, Marta",
+   "authorId": null,
+   "teaser": "Alica, a Londonban élő spanyol fordító az éjszakai vonaton megismerkedik az amerikai egyetemi professzorral, Terry Miltonnal, és doktoranduszával, Bou-val.A két férfi a professzor nagy vihart..."
+  },
+  {
+   "bookId": "139535340",
+   "title": "Elmondom neked... Fisch Sarolta holokauszttúlélő emlékei. Lejegyezte Eszenyi Irén",
+   "author": "Fisch Sarolta (1924–2020)",
+   "authorId": null,
+   "teaser": "Ez a megrázó emlékirat egy rendkívüli ember, a történetét elbeszélő Fisch Sarolta emlékműve, akit a magyar hatóságok 1944-ben a rokonaival együtt Berekböszörményből a nagyváradi gettóba,..."
+  }
+ ],
+ "sections": {
+  "uj": [
+   {
+    "bookId": "139537122",
+    "title": "Két kép között",
+    "author": "MÁCSAI PÁL",
+    "authorId": "5573",
+    "subtitle": "Önportré és vallomás",
+    "translator": null,
+    "teaser": ",,Ebben a könyvben oda is nézek, ahol az látszik, ami nincs már, mert elmúlt, de van, mert emlékszem rá.\" Mácsai Pál önéletrajzi könyve számvetés,visszatekintés, emlékpróba. Portré. A...",
+    "extra": {}
+   },
+   {
+    "bookId": "139537252",
+    "title": "Nővé dermedve",
+    "author": "Ernaux, Annie",
+    "authorId": "4340",
+    "subtitle": "Női szerepek útvesztőjében",
+    "translator": "Gulyás Adrienn",
+    "teaser": "Milyen egy igazi nő? Erős és hatékony, mint a szatócsboltot vezető anya? Szelíd és halk szavú, mint a középosztálybeli barátnők anyukája? Vagy szabad és okos, mint Simone de Beauvoir? Annie...",
+    "extra": {}
+   },
+   {
+    "bookId": "139536127",
+    "title": "Anakonda",
+    "author": "Mái Attila",
+    "authorId": "5550",
+    "subtitle": "Petri-díjas novellák",
+    "translator": null,
+    "teaser": "Mi történik, ha egy könyv nemcsak mesél, hanem lassan át is formálja a valóságot? A kötet szövegei különös látószögekből vizsgálják az emberi kapcsolatokat, az emlékezetet, a magányt...",
+    "extra": {}
+   }
+  ],
+  "ekonyv_ujdonsag": [
+   {
+    "bookId": "139537122",
+    "title": "Két kép között",
+    "author": "MÁCSAI PÁL",
+    "authorId": "5573",
+    "subtitle": "Önportré és vallomás",
+    "translator": null,
+    "teaser": ",,Ebben a könyvben oda is nézek, ahol az látszik, ami nincs már, mert elmúlt, de van, mert emlékszem rá.\" Mácsai Pál önéletrajzi könyve számvetés,visszatekintés, emlékpróba. Portré. A...",
+    "extra": {}
+   },
+   {
+    "bookId": "139537252",
+    "title": "Nővé dermedve",
+    "author": "Ernaux, Annie",
+    "authorId": "4340",
+    "subtitle": "Női szerepek útvesztőjében",
+    "translator": "Gulyás Adrienn",
+    "teaser": "Milyen egy igazi nő? Erős és hatékony, mint a szatócsboltot vezető anya? Szelíd és halk szavú, mint a középosztálybeli barátnők anyukája? Vagy szabad és okos, mint Simone de Beauvoir? Annie...",
+    "extra": {}
+   }
+  ],
+  "elo": [
+   {
+    "bookId": "139537270",
+    "title": "Igazat kérdezni",
+    "author": "Dragomán György",
+    "authorId": null,
+    "subtitle": null,
+    "translator": null,
+    "teaser": "Dragomán György sok év terméséből válogatta az Igazat kérdezni nyolcvanöt történetét. Vakmerő gyerekek, különös anyák és eltűnő apák, fergeteges energiájú nagymamák és nagyapák...",
+    "extra": {
+     "Várható megjelenés": "2026-11",
+     "Tervezett ár": "6999 Ft",
+     "Tervezett oldalszám": "272"
+    }
+   },
+   {
+    "bookId": "139538020",
+    "title": "Ráolvasok. Emlékek, emberek, könyvek",
+    "author": "Szabó T. Anna",
+    "authorId": null,
+    "subtitle": null,
+    "translator": null,
+    "teaser": "Szabó T. Anna szenvedélyes olvasó, az írott szó átjárja a mindennapjait. Új könyvében az élet elválaszthatatlan a művészettől, a személyesség az irodalomtól és a történelmi tapasztalattól....",
+    "extra": {
+     "Várható megjelenés": "2026-11",
+     "Tervezett ár": "5999 Ft",
+     "Tervezett oldalszám": "320"
+    }
+   }
+  ],
+  "kiemelt": [
+   {
+    "bookId": "139537122",
+    "title": "Két kép között",
+    "author": "MÁCSAI PÁL",
+    "authorId": "5573",
+    "subtitle": "Önportré és vallomás",
+    "translator": null,
+    "teaser": ",,Ebben a könyvben oda is nézek, ahol az látszik, ami nincs már, mert elmúlt, de van, mert emlékszem rá.\" Mácsai Pál önéletrajzi könyve számvetés,visszatekintés, emlékpróba. Portré. A...",
+    "extra": {}
+   },
+   {
+    "bookId": "139537252",
+    "title": "Nővé dermedve",
+    "author": "Ernaux, Annie",
+    "authorId": "4340",
+    "subtitle": "Női szerepek útvesztőjében",
+    "translator": "Gulyás Adrienn",
+    "teaser": "Milyen egy igazi nő? Erős és hatékony, mint a szatócsboltot vezető anya? Szelíd és halk szavú, mint a középosztálybeli barátnők anyukája? Vagy szabad és okos, mint Simone de Beauvoir? Annie...",
+    "extra": {}
+   }
+  ]
+ },
+ "toplist": [
+  {
+   "rank": 1,
+   "author": "Tóth Krisztina",
+   "authorId": null,
+   "title": "Kánkán az üvegpadlón",
+   "bookId": "139532712"
+  },
+  {
+   "rank": 2,
+   "author": "Darvasi László",
+   "authorId": null,
+   "title": "Az első izlandi hóregény",
+   "bookId": "139532714"
+  },
+  {
+   "rank": 3,
+   "author": "Tüdős Klára",
+   "authorId": "5538",
+   "title": "Rongyok. A teljes memoár",
+   "bookId": "139532492"
+  },
+  {
+   "rank": 4,
+   "author": "Krusovszky Dénes",
+   "authorId": null,
+   "title": "A másik mozaik",
+   "bookId": "139530815"
+  },
+  {
+   "rank": 5,
+   "author": "Tolkien, J. R. R. (1892–1973)",
+   "authorId": null,
+   "title": "A hobbit",
+   "bookId": "139465957"
+  },
+  {
+   "rank": 6,
+   "author": "Esterházy Péter (1950–2016)",
+   "authorId": null,
+   "title": "Minden művészet. Válogatott beszélgetések",
+   "bookId": "139530817"
+  },
+  {
+   "rank": 7,
+   "author": "Krasznahorkai László",
+   "authorId": "26",
+   "title": "Sátántangó",
+   "bookId": "1638151"
+  },
+  {
+   "rank": 8,
+   "author": "García Márquez, Gabriel",
+   "authorId": "5127",
+   "title": "Száz év magány",
+   "bookId": "139459163"
+  },
+  {
+   "rank": 9,
+   "author": "Spiró György",
+   "authorId": null,
+   "title": "Repedt kályhámon macska ül (Az 1986-os év)",
+   "bookId": "139530968"
+  },
+  {
+   "rank": 10,
+   "author": "William Shakespeare",
+   "authorId": "4732",
+   "title": "Rómeó és Júlia - Nádasdy Ádám fordítása",
+   "bookId": "139491948"
+  }
+ ],
+ "events": [
+  {
+   "date": "X. 27.",
+   "text": "17:00 Csáki Judit – Gazdag Gyula: Száraz tónak nedves partján│ Könyvbemutató",
+   "url": "https://fb.me/e/6k7FVT6eZ"
+  },
+  {
+   "date": "XI. 03.",
+   "text": "18:00 Bartis Attila: A rég │ Könyvbemutató",
+   "url": "https://fb.me/e/8ePj8mOb4"
+  },
+  {
+   "date": "XI. 05.",
+   "text": "17:00 Mái Attila: Anakonda │ Könyvbemutató",
+   "url": "https://fb.me/e/8dv8GVre2"
+  },
+  {
+   "date": "XI. 16.",
+   "text": "17:00 Bereményi Géza: Milyen világ ez? │ Könyvbemutató",
+   "url": "https://fb.me/e/9m8tfG52T"
+  },
+  {
+   "date": "XI. 17.",
+   "text": "18:00 Mácsai Pál: Két kép között │ Könyvbemutató",
+   "url": "https://fb.me/e/6z9AFlZY3"
+  },
+  {
+   "date": "XI. 23.",
+   "text": "18:00 Dragomán György: Igazat kérdezni │ Könyvbemutató",
+   "url": "https://fb.me/e/7ZdFipQ9H"
+  },
+  {
+   "date": "XII. 08.",
+   "text": "17:00 Boldizsár Ildikó: Az út ott van előtted │ Könyvbemutató",
+   "url": "https://fb.me/e/lAM68RnrS"
+  }
+ ],
+ "video": {
+  "src": "https://www.youtube.com/embed/GavKZKqqQuA?si=UyWRLOshekJQ9xtE",
+  "title": "YouTube video player"
+ },
+ "newsletterUrl": "http://hir.lira.hu/dm/subs/lira_feliratkozas.html"
+}

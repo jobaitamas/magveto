@@ -1,0 +1,328 @@
+{
+ "books": 325,
+ "coreBooks": 59,
+ "authors": 252,
+ "authorIndex": 252,
+ "press": 50,
+ "categories": 31,
+ "booksWithoutDescription": [
+  "139533903",
+  "1443374",
+  "2391768",
+  "397658",
+  "2392123",
+  "500427",
+  "2391813"
+ ],
+ "booksWithUnresolvedAuthor": [
+  "139491948",
+  "139536129",
+  "139534193",
+  "139534349",
+  "139533087",
+  "139533086"
+ ],
+ "authorsWithPhoto": 176,
+ "authorsWithBio": 148,
+ "worksTotalAllAuthors": 687,
+ "errors": [
+  {
+   "url": "https://magveto.hu/media/kiadok/photo/139537270.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/4990.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4814.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4691.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4517.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/1528.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/6.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5048.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/4140.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5077.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5327.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4349.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/5408.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5360.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2018/3907.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4547.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5131.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4660.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2020/4387.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2018/3902.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4548.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/4991.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/18.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4435.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/347.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/2392.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5178.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5083.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4407.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2019/4139.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5337.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/1401.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/2067.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/4066.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5329.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/22.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4900.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/335.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4540.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/5508.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/25.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2020/4131.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2020/1258.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5328.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/3806.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/5510.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/1961.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5378.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4430.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/5335.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5049.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4867.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/2940.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/5509.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2026/30.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/4967.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/3189.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4428.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4599.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/226.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/1953.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4708.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4432.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2024/5055.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2022/4625.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/269.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4291.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/325.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/287.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2023/4193.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/1.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/4507.jpg",
+   "status": 404
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2021/359.jpg",
+   "error": "cannot identify image file <_io.BytesIO object at 0x701d03873790>"
+  },
+  {
+   "url": "https://magveto.hu/media/kiadok/szerzok/2025/4727.jpg",
+   "status": 404
+  }
+ ],
+ "errorCount": 74,
+ "scrapedAt": "2026-11-12T17:49:43Z"
+}
