@@ -431,6 +431,12 @@ def main():
         h = get(path)
         open(os.path.join(OUT, "pages", f"{name}.html"), "w").write(content_part(h or ""))
 
+    print("site logo (wordmark forrás)…")
+    os.makedirs(os.path.join(ROOT, "brand", "source"), exist_ok=True)
+    for name in ["images/logo.jpg"]:
+        r = S.get(urljoin(BASE, name), timeout=30)
+        if r.status_code == 200:
+            open(os.path.join(ROOT, "brand", "source", os.path.basename(name)), "wb").write(r.content)
     print("images…")
     def cov(b):
         r = save_image(b["coverSrc"], os.path.join(MEDIA, "covers", f"{b['id']}.webp"), 900)

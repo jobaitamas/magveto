@@ -25,6 +25,6 @@ jobs:
         run: |
           git config user.name "content-bot"
           git config user.email "content-bot@users.noreply.github.com"
-          git add content public/media scraper/raw.tar.gz
+          git add content public/media scraper/raw.tar.gz brand/source
           git commit -m "content: snapshot magveto.hu ($(date -u +%F))" || echo "nincs változás"
           git push

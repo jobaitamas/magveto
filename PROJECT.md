@@ -76,6 +76,10 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 | 2026-11-12 | Logó: Tamás 512 px PNG-t adott (csak az „m” jel); Claude vektorizálta → `brand/logo.svg` (0 eltérő pixel). A régi fejlécben a jel mellett „MAGVETŐ KIADÓ” talpatlan felirat is van – kérdés: megtartjuk-e | Claude |
 | 2026-11-12 | Leszedés módja: **GitHub Actions** (`.github/workflows/scrape.yml` + `scraper/scrape.py`), mert a Claude-környezet nem éri el a magveto.hu-t; Claude in Chrome nem csatlakozik; a beépített böngésző csak felderítésre kellett | Claude |
 | 2026-11-12 | Képek: borító max 900 px, szerzőfotó max 800 px, WebP, a repóban (`public/media/`) | Claude |
+| 2026-11-12 | **Brand: „A – Papír” irány** (Newsreader + Instrument Sans; papír #F5F1E8, tinta #1B1A17, grafit #5E5A52, pecsétpiros #A4281B) | Tamás |
+| 2026-11-12 | Logó: kell a „Magvető” felirat is; a régi oldali logót (`images/logo.jpg`, 295×97) a scraper letölti → vektorizálni; ha a minősége kevés, nyitott tétel marad | Tamás |
+| 2026-11-12 | Határidő megerősítve: 2026-11-19. Stack: Astro, Supabase nélkül | Tamás |
+| 2026-11-12 | Repo: https://github.com/jobaitamas/magveto (push-hoz a Claude GitHub App telepítése kell a repóra) | Tamás |
 | 2026-11-12 | Betűk: Google Fonts helyett önhosztolt @fontsource csomagok (npm-ről elérhetők, gyorsabb, GDPR-barátabb) | Claude |
 
 ## 7b. Forrásoldal-szerkezet (felderítve, a scraperhez)
@@ -90,19 +94,17 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 - Kapcsolat: egyetlen középre zárt szöveges blokk; e-mailek [pont]/[kukac] álcázással.
 
 ## 8. Nyitott kérdések
-- Repo neve + GitHub összekötése a claude.ai-ban (Tamás)
-- Határidő megerősítése: 2026-11-19?
-- Tech stack (Astro, Supabase nélkül) jóváhagyása
-- Logó-felirat: régi „MAGVETŐ KIADÓ” vagy új betűvel szedett „Magvető”?
-- Brand irány választás (exploration v1: A Papír / B Kontraszt / C Polc; javaslat: A + B vonalai)
+- Claude GitHub App telepítése a repóra (push blokkolva nélküle)
+- Logó-felirat vektorizálása a régi logóból (a scraper letölti)
 - Tipográfiai normalizálás engedélye (,, → „, szóköz, kis-nagybetű, névsorrend a kártyákon) – szöveg szóra pontosan marad
 - Könyv-aloldalak köre: a scraper első futása után számok alapján döntünk (core = kezdőlap + 50 legfrissebb; + a szerzőik összes műve?)
 
 ## 9. Státusz
 - Fázis 0: kész, kivéve repo/GitHub.
 - Fázis 1 (leszedés): scraper + workflow kész, repóra vár.
-- Fázis 2 (brand): exploration v1 kész → `brand/exploration-v1.html` (generátor: `/home/claude/build_explore.py`, sablon: `brand/exploration-template.html`) → **Tamás jóváhagyására vár**.
+- Fázis 2 (brand): **jóváhagyva – A „Papír”**. Részletes design system a Fázis 4-ben.
+- Fázis 3 (IA + wireframe): indul.
 
 ## 10. Következő lépés
-- Tamás: repo + GitHub-összekötés, brand-irány döntés.
+- Tamás: Claude GitHub App telepítése a `jobaitamas/magveto` repóra.
 - Claude: repóba push → scrape workflow futtatása → eredmény ellenőrzése → Fázis 3 (IA + wireframe).
