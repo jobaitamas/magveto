@@ -17,31 +17,36 @@
    "139523308",
    "139523271",
    "139523272"
-  ]
+  ],
+  "totalInSource": 20
  },
  {
   "id": "73",
   "name": "Antológia",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 17
  },
  {
   "id": "74",
   "name": "Dráma és színház",
   "bookIds": [
    "139413847"
-  ]
+  ],
+  "totalInSource": 5
  },
  {
   "id": "76",
   "name": "Egyéb",
   "bookIds": [
    "139394845"
-  ]
+  ],
+  "totalInSource": 8
  },
  {
   "id": "75",
   "name": "Életrajz, memoár",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 7
  },
  {
   "id": "77",
@@ -49,7 +54,8 @@
   "bookIds": [
    "139414115",
    "139390060"
-  ]
+  ],
+  "totalInSource": 12
  },
  {
   "id": "235",
@@ -62,12 +68,14 @@
    "139459163",
    "139454673",
    "139452898"
-  ]
+  ],
+  "totalInSource": 17
  },
  {
   "id": "140",
   "name": "Grecsó Krisztián művei",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 17
  },
  {
   "id": "78",
@@ -77,32 +85,38 @@
    "2391813",
    "2318422",
    "2392123"
-  ]
+  ],
+  "totalInSource": 10
  },
  {
   "id": "228",
   "name": "Időmérték",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 8
  },
  {
   "id": "158",
   "name": "Interjúkötet",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 0
  },
  {
   "id": "79",
   "name": "Irodalomtudomány",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 3
  },
  {
   "id": "133",
   "name": "Kisregény",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 1
  },
  {
   "id": "233",
   "name": "Klasszikusok",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 9
  },
  {
   "id": "234",
@@ -112,7 +126,8 @@
    "139534289",
    "139534290",
    "139534291"
-  ]
+  ],
+  "totalInSource": 36
  },
  {
   "id": "80",
@@ -123,12 +138,14 @@
    "139410022",
    "139391975",
    "288885"
-  ]
+  ],
+  "totalInSource": 11
  },
  {
   "id": "167",
   "name": "Meseirodalom",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 4
  },
  {
   "id": "81",
@@ -150,19 +167,22 @@
    "1382592",
    "1638152",
    "500427"
-  ]
+  ],
+  "totalInSource": 28
  },
  {
   "id": "149",
   "name": "Ottlik Géza (1912-1990) művei",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 4
  },
  {
   "id": "82",
   "name": "Politika, társadalomtudomány",
   "bookIds": [
    "2092158"
-  ]
+  ],
+  "totalInSource": 5
  },
  {
   "id": "144",
@@ -175,7 +195,8 @@
    "139401504",
    "139385404",
    "1431944"
-  ]
+  ],
+  "totalInSource": 7
  },
  {
   "id": "83",
@@ -206,12 +227,14 @@
    "325845",
    "188762",
    "149523"
-  ]
+  ],
+  "totalInSource": 129
  },
  {
   "id": "132",
   "name": "Sorozat, életműkiadás",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 3
  },
  {
   "id": "143",
@@ -231,7 +254,8 @@
    "1892927",
    "1382501",
    "1361764"
-  ]
+  ],
+  "totalInSource": 14
  },
  {
   "id": "84",
@@ -240,31 +264,36 @@
    "139411077",
    "139408773",
    "139406847"
-  ]
+  ],
+  "totalInSource": 9
  },
  {
   "id": "262",
   "name": "Színház az egész",
   "bookIds": [
    "139491948"
-  ]
+  ],
+  "totalInSource": 24
  },
  {
   "id": "166",
   "name": "Szociográfia",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 1
  },
  {
   "id": "232",
   "name": "Tények és Tanúk",
   "bookIds": [
    "139532492"
-  ]
+  ],
+  "totalInSource": 43
  },
  {
   "id": "85",
   "name": "Vallás, filozófia",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 1
  },
  {
   "id": "86",
@@ -279,11 +308,13 @@
    "1813515",
    "731675",
    "397658"
-  ]
+  ],
+  "totalInSource": 54
  },
  {
   "id": "87",
   "name": "Zene",
-  "bookIds": []
+  "bookIds": [],
+  "totalInSource": 1
  }
 ]
