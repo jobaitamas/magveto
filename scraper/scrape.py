@@ -374,8 +374,24 @@ def main():
     ap.add_argument("--list-size", type=int, default=50)
     ap.add_argument("--press", type=int, default=50)
     ap.add_argument("--cat-pages", type=int, default=3)
+    ap.add_argument("--only-categories", action="store_true",
+                    help="csak a kategória-címkéket frissíti a meglévő books.json-ban (minden kategóriaoldalt bejár)")
     a = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
+    if a.only_categories:
+        books = json.load(open(os.path.join(OUT, "books.json")))
+        cats, _ = scrape_categories(a.cat_pages)
+        ids = {b["id"] for b in books}
+        for b in books:
+            b["categories"] = [c["id"] for c in cats if b["id"] in c["bookIds"]]
+        for c in cats:
+            c["totalInSource"] = len(c["bookIds"])
+            c["bookIds"] = [i for i in c["bookIds"] if i in ids]
+        json.dump(books, open(os.path.join(OUT, "books.json"), "w"), ensure_ascii=False, indent=1)
+        json.dump(cats, open(os.path.join(OUT, "categories.json"), "w"), ensure_ascii=False, indent=1)
+        print(json.dumps({"booksWithCategory": sum(1 for b in books if b["categories"]), "books": len(books),
+                          "cats": [(c["name"], c["totalInSource"], len(c["bookIds"])) for c in cats], "errors": ERRORS[:20]}, ensure_ascii=False, indent=1))
+        return
 
     print("home…"); home = scrape_home()
     print("categories + list…"); cats, list_html = scrape_categories(a.cat_pages)
