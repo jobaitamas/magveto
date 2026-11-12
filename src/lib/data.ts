@@ -82,8 +82,10 @@ export const books: Book[] = tmpBooks.map(({ b, base }) => {
   const expected = m.expected || extra['Várható megjelenés'] || null;
   const forthcoming = forthcomingIds.has(b.id) || (!!expected && !m.published);
   const auths: AuthorRef[] = (b.authors || []).map((a: any) => {
-    const r = resolveAuthor(a.id, a.name);
-    return { id: r?.id ?? null, name: r?.name ?? displayName(a.name), slug: r?.slug ?? null };
+    const role = /\[szerk\.?\]/i.test(a.name) ? ' (szerk.)' : '';
+    const nm = a.name.replace(/\s*\[szerk\.?\]\s*/i, '').trim();
+    const r = resolveAuthor(a.id, nm);
+    return { id: r?.id ?? null, name: (r?.name ?? displayName(nm)) + role, slug: r?.slug ?? null };
   });
   const slug = (usedBookSlugs.get(base) || 0) > 1 ? `${base}-${b.id}` : base;
   const title = typo(b.title);
@@ -110,6 +112,12 @@ for (const a of authors) {
   a.workIds = a.workIds.filter((id) => bookById.has(id))
     .sort((x, y) => (bookById.get(x)!.sortKey < bookById.get(y)!.sortKey ? 1 : -1));
 }
+// fordított irány: ha a könyv a szerzőhöz van kötve, de a szerző oldalán nincs műlista (forráshiány), mégis megjelenjen
+for (const b of books) for (const a of b.authors) {
+  const au = a.id ? authorById.get(a.id) : undefined;
+  if (au && !au.workIds.includes(b.id)) au.workIds.push(b.id);
+}
+for (const a of authors) a.workIds.sort((x, y) => (bookById.get(x)!.sortKey < bookById.get(y)!.sortKey ? 1 : -1));
 // könyv → szerző kapcsolat a szerzőoldalak műlistájából is (ha a könyvoldalon nincs feloldva)
 for (const a of authors) for (const id of a.workIds) {
   const b = bookById.get(id)!;
@@ -147,7 +155,11 @@ export const home = {
   events: [] as { date: Date; label: string; time: string; title: string; url: string }[],
   video: H.video as { src: string; title: string } | null,
   newsletterUrl: H.newsletterUrl as string | null,
-  banners: (H.banners || []) as { img: string; href: string }[],
+  banners: ((H.banners || []) as any[]).filter((bn) => bn.img).map((bn) => {
+    const slug = (bn.href.split('/').pop() || '').replace(/-\d+$/, '');
+    const target = books.find((b) => b.slug === slug);
+    return { img: bn.img.replace(/\.gif$/, '.webp'), href: bn.href as string, label: target ? `${target.authors.map((a) => a.name).join(', ')}: ${target.title}` : null };
+  }),
 };
 home.featured.forEach((b) => seen.add(b.id));
 home.newest = [...(H.sections?.uj || []), ...(H.sections?.kiemelt || []), ...(H.sections?.ekonyv_ujdonsag || [])]

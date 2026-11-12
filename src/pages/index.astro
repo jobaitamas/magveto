@@ -122,9 +122,10 @@ const ytId = home.video?.src.match(/embed\/([\w-]+)/)?.[1];
       )}
       <div class="extra__side">
         {home.banners.length > 0 && (
+          <p class="ban__h meta">A Líra ajánlatai</p>
           <ul class="ban" role="list" aria-label="A Líra ajánlatai">
             {home.banners.map((bn) => (
-              <li><a href={bn.href} rel="noopener" class="ban__a"><img src={bn.img} alt="Líra ajánlat – a kampányoldal megnyitása" width="270" height="270" loading="lazy" /></a></li>
+              <li><a href={bn.href} rel="noopener" class="ban__a"><img src={bn.img} alt={bn.label ? `${bn.label} – a Líra ajánlata` : 'A Líra ajánlata'} width="270" height="270" loading="lazy" /></a></li>
             ))}
           </ul>
         )}
@@ -200,6 +201,7 @@ const ytId = home.video?.src.match(/embed\/([\w-]+)/)?.[1];
   .extra__video iframe { width: 100%; height: 100%; border: 0; display: block; }
   .ban { list-style: none; margin: 0 0 var(--s-5); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
   .ban__a { display: block; border: 1px solid var(--c-margin); }
+  .ban__h { margin: 0 0 var(--s-2); }
   .nl { border-top: var(--rule); padding-top: var(--s-4); }
   .nl__t { font-size: var(--t-h3); margin-bottom: var(--s-2); }
   @media (max-width: 860px) { .extra { grid-template-columns: 1fr; } }

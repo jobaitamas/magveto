@@ -13,3 +13,11 @@ for (const f of readdirSync(src)) {
   n++;
 }
 console.log(`thumbs: ${n} új bélyegkép`);
+
+// Líra-bannerek: az animált GIF-ből statikus első képkocka (WCAG 2.2.2: ne legyen magától mozgó tartalom).
+const bsrc = 'public/media/banners';
+if (existsSync(bsrc)) for (const f of readdirSync(bsrc)) {
+  if (!f.endsWith('.gif')) continue;
+  const dest = `${bsrc}/${f.replace('.gif', '.webp')}`;
+  if (!existsSync(dest)) await sharp(`${bsrc}/${f}`, { pages: 1 }).webp({ quality: 82 }).toFile(dest);
+}

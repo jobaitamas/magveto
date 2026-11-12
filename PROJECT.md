@@ -113,7 +113,9 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 - Fázis 1 (leszedés): kész (lásd döntésnapló). Kategória-címkék teljes bejárása folyamatban/kész (`--only-categories`).
 - Fázis 2 (brand): **jóváhagyva – A „Papír”**. Részletes design system a Fázis 4-ben.
 - Fázis 3 (IA + wireframe): **jóváhagyva** (`ia/ia-wireframes-v1.html` + döntésnapló IA-1…6).
-- Fázis 4 (design system + kulcsképernyők): indul – kódban (Astro), élő preview-n bemutatva: stílusoldal + Kezdőlap + Kiadvány aloldal.
+- Fázis 4 (design system + kulcsképernyők): **kész, jóváhagyásra vár** – kódban (Astro): `/stilus`, `/` (kezdőlap), `/konyvek/[slug]`. Teljes műlista leszedve (699 könyv, 254 szerző – Mácsai Pál és Marstein, Trude pótolva a szerzőlistán kívülről). Kereső (MiniSearch, ékezetfüggetlen) működik a fejlécben. axe-core: 0 hiba a 3 oldalon.
+  - Kód-térkép: `src/lib/data.ts` (adatmodell, összekötések), `src/lib/text.ts` (tipográfia, slug, magyar ábécé), `src/styles/global.css` (tokenek), `src/components/*`, `src/pages/*`, `src/scripts/search.ts`, `scripts/thumbs.mjs` (bélyegképek + statikus bannerek, build előtt).
+  - Ismert, még hiányzó oldalak (Fázis 5): /kiadvanyok, /szerzok, /szerzok/[slug], /kereses, /sajtoszoba(+tétel), /kapcsolat, /kategoriak/[slug] → a preview-n ezek linkjei még 404.
 
 ## 10. Következő lépés
 - Claude: Fázis 4 Astro-ban → push → Tamás beköti a Vercelt → preview link jóváhagyásra.

@@ -57,7 +57,7 @@ const noCover = books.find((b) => !b.cover);
       <table class="sg__table">
         <thead><tr><th>Pár</th><th>Arány</th><th>Követelmény</th><th>Eredmény</th></tr></thead>
         <tbody>{pairs.map(([n, a, b, min]) => { const r = ratio(a, b); return (
-          <tr><td><span class="sg__pair" style={`color:${a};background:${b}`}>Aa</span> {n}</td><td>{r.toFixed(2)}:1</td><td>≥ {min}:1</td><td>{r >= min ? '✓ megfelel' : '✗ nem felel meg'}</td></tr>
+          <tr><td>{min === 3 ? <span class="sg__pair sg__pair--line" style={`border-color:${a};background:${b}`} aria-hidden="true"></span> : <span class="sg__pair" style={`color:${a};background:${b}`}>Aa</span>} {n}</td><td>{r.toFixed(2)}:1</td><td>≥ {min}:1</td><td>{r >= min ? '✓ megfelel' : '✗ nem felel meg'}</td></tr>
         ); })}</tbody>
       </table>
     </section>
@@ -111,6 +111,7 @@ const noCover = books.find((b) => !b.cover);
   .sg__h3 { font-size: var(--t-h3); margin: var(--s-6) 0 var(--s-3); }
   .sg__table { width: 100%; border-collapse: collapse; font: 400 var(--t-small)/1.4 var(--f-sans); background: var(--c-sheet); }
   .sg__table th, .sg__table td { text-align: left; padding: 10px 12px; border-bottom: var(--rule); }
+  .sg__pair--line { width: 36px; height: 26px; vertical-align: middle; border-width: 1.5px !important; }
   .sg__pair { display: inline-block; padding: 2px 8px; font-weight: 600; border: 1px solid var(--c-margin); margin-right: 6px; }
   .sg__type p { margin: 0 0 var(--s-2); }
   .sg__type .meta { margin-top: var(--s-5); }
