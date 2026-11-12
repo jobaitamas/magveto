@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Magvető – brand exploration v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --doc-ink:#1b1b1b; --doc-muted:#5b5b5b; --doc-line:#e3e3e3; --doc-bg:#fafafa; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 15px/1.55 "Instrument Sans", system-ui, sans-serif; color:var(--doc-ink); background:var(--doc-bg); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+  .concept-bar { background:#1b1b1b; color:#fff; font-size:12px; letter-spacing:.04em; text-align:center; padding:6px 12px; }
+  h1 { font: 600 34px/1.15 "Instrument Sans", sans-serif; margin: 28px 0 6px; letter-spacing:-.01em; }
+  h2 { font: 600 22px/1.25 "Instrument Sans", sans-serif; margin: 56px 0 14px; padding-top: 18px; border-top: 1px solid var(--doc-line); }
+  h3 { font: 600 16px/1.3 "Instrument Sans", sans-serif; margin: 22px 0 8px; }
+  p, li { max-width: 78ch; }
+  .lead { font-size: 17px; color: var(--doc-muted); }
+  .meta { color: var(--doc-muted); font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background:#fff; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--doc-line); }
+  th { font-weight: 600; background:#f2f2f2; }
+  .tag { display:inline-block; font-size:12px; padding:1px 8px; border-radius:99px; background:#eee; margin:0 4px 4px 0; }
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card { background:#fff; border:1px solid var(--doc-line); border-radius:10px; padding:18px 20px; }
+  .ok { color:#1d6b35; font-weight:600; } .mid { color:#8a5a00; font-weight:600; } .no { color:#a1261b; font-weight:600; }
+  code { font-size: 13px; background:#f0f0f0; padding: 1px 5px; border-radius:4px; }
+  .note { border-left: 3px solid #1b1b1b; background:#fff; padding: 10px 14px; margin: 14px 0; }
+
+  /* --------- irány-blokk közös --------- */
+  .dir { margin-top: 26px; border-radius: 14px; overflow: hidden; border: 1px solid var(--doc-line); }
+  .dir-head { padding: 22px 26px 6px; background:#fff; }
+  .dir-head .lbl { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--doc-muted); }
+  .dir-head h3 { font-size: 24px; margin: 4px 0 6px; }
+  .dir-body { display:grid; grid-template-columns: 300px 1fr; gap: 0; background:#fff; }
+  .dir-side { padding: 18px 26px 26px; border-right: 1px solid var(--doc-line); }
+  .sw { display:flex; align-items:center; gap:10px; margin: 6px 0; font-size: 13px; }
+  .sw i { width:34px; height:34px; border-radius:6px; border:1px solid rgba(0,0,0,.12); flex:none; }
+  .sw b { font-weight:600; display:block; }
+  .sw span { color: var(--doc-muted); font-size:12px; }
+  .spec { margin-top: 16px; font-size: 13px; color: var(--doc-muted); }
+  .spec b { color: var(--doc-ink); }
+  .mock { padding: 0; }
+
+  /* mini site mock – minden irány a saját változóival */
+  .site { background: var(--bg); color: var(--ink); font-family: var(--f-text); min-height: 100%; }
+  .site a { color: inherit; text-decoration: none; }
+  .s-concept { background: var(--ink); color: var(--bg); font: 500 11px/1 var(--f-ui); text-align:center; padding:6px; letter-spacing:.03em; }
+  .s-head { display:flex; align-items:center; gap: 22px; padding: 16px 26px; border-bottom: var(--rule); }
+  .s-logo { display:flex; align-items:center; gap:10px; color: var(--ink); }
+  .s-logo svg { width: 34px; height: 34px; }
+  .s-logo .wm { font: var(--wm-font); letter-spacing: var(--wm-track); line-height:1.05; text-transform: var(--wm-case); }
+  .s-nav { display:flex; gap: 18px; font: 500 14px/1 var(--f-ui); margin-left: auto; }
+  .s-nav a:hover { color: var(--accent); }
+  .s-search { display:flex; align-items:center; gap:8px; border: 1.5px solid var(--muted); border-radius: var(--radius); padding: 7px 12px; font: 400 13px/1 var(--f-ui); color: var(--muted); min-width: 190px; background: var(--surface); }
+  .s-hero { display:grid; grid-template-columns: 210px 1fr; gap: 30px; padding: 30px 26px 24px; align-items: start; }
+  .s-hero img { width: 100%; aspect-ratio: 2/3; object-fit: cover; background: var(--surface); display:block; box-shadow: var(--cover-shadow); border-radius: var(--cover-radius); }
+  .s-eyebrow { font: 600 12px/1 var(--f-ui); letter-spacing:.08em; text-transform: uppercase; color: var(--accent); }
+  .s-author { font: 500 16px/1.3 var(--f-ui); margin: 12px 0 2px; }
+  .s-author a { border-bottom: 1px solid currentColor; }
+  .s-title { font: var(--title-font); letter-spacing: var(--title-track); margin: 4px 0 6px; }
+  .s-sub { font: italic 400 19px/1.35 var(--f-text); color: var(--muted); margin: 0 0 14px; }
+  .s-body { font: 400 16px/1.6 var(--f-text); max-width: 56ch; margin: 0 0 16px; }
+  .s-facts { display:flex; flex-wrap: wrap; gap: 6px 18px; font: 400 13px/1.4 var(--f-ui); color: var(--muted); margin-bottom: 16px; }
+  .s-facts b { color: var(--ink); font-weight:600; }
+  .s-btn { display:inline-block; font: 600 14px/1 var(--f-ui); padding: 12px 18px; border-radius: var(--radius); background: var(--btn-bg); color: var(--btn-fg) !important; }
+  .s-btn2 { display:inline-block; font: 600 14px/1 var(--f-ui); padding: 11px 16px; border-radius: var(--radius); border: 1.5px solid var(--ink); margin-left: 8px; }
+  .s-sec { padding: 8px 26px 30px; }
+  .s-sec-h { display:flex; align-items: baseline; justify-content: space-between; border-top: var(--rule); padding-top: 14px; margin-bottom: 14px; }
+  .s-sec-h h4 { margin:0; font: var(--h4-font); }
+  .s-sec-h a { font: 500 13px/1 var(--f-ui); color: var(--accent); }
+  .s-cards { display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .s-card img { width:100%; aspect-ratio: 2/3; object-fit: cover; display:block; border-radius: var(--cover-radius); box-shadow: var(--cover-shadow); background: var(--surface); }
+  .s-card .a { font: 500 12px/1.3 var(--f-ui); color: var(--muted); margin-top: 10px; }
+  .s-card .t { font: var(--card-title); margin-top: 3px; }
+  .s-card .st { font: italic 400 13px/1.35 var(--f-text); color: var(--muted); margin-top: 3px; }
+
+  /* irány A */
+  .A { --bg:#F5F1E8; --surface:#FFFDF8; --ink:#1B1A17; --muted:#5E5A52; --accent:#A4281B; --line:#D9D2C3;
+       --f-text:"Newsreader", Georgia, serif; --f-ui:"Instrument Sans", system-ui, sans-serif;
+       --rule: 1px solid var(--line); --radius: 2px; --cover-radius: 1px; --cover-shadow: 0 1px 0 rgba(0,0,0,.08), 0 10px 24px -14px rgba(40,30,10,.45);
+       --title-font: 500 46px/1.04 "Newsreader", serif; --title-track: -.01em; --h4-font: 500 24px/1.2 "Newsreader", serif;
+       --card-title: 500 18px/1.2 "Newsreader", serif; --btn-bg:#1B1A17; --btn-fg:#F5F1E8;
+       --wm-font: 600 17px/1 "Newsreader", serif; --wm-track: 0; --wm-case: none; }
+  /* irány B */
+  .B { --bg:#FFFFFF; --surface:#F2F2EF; --ink:#111111; --muted:#585858; --accent:#1F5E3B; --signal:#D7F25C;
+       --f-text:"Source Serif 4", Georgia, serif; --f-ui:"Schibsted Grotesk", system-ui, sans-serif;
+       --rule: 2px solid var(--ink); --radius: 0; --cover-radius: 0; --cover-shadow: none;
+       --title-font: 800 54px/0.98 "Schibsted Grotesk", sans-serif; --title-track: -.03em; --h4-font: 800 26px/1 "Schibsted Grotesk", sans-serif;
+       --card-title: 700 17px/1.15 "Schibsted Grotesk", sans-serif; --btn-bg:#111111; --btn-fg:#FFFFFF;
+       --wm-font: 800 15px/1 "Schibsted Grotesk", sans-serif; --wm-track: .06em; --wm-case: uppercase; }
+  .B .s-eyebrow { background: var(--signal); color: var(--ink); display:inline-block; padding: 5px 8px; }
+  /* irány C */
+  .C { --bg:#EEEAE3; --surface:#F8F6F2; --ink:#24211D; --muted:#625C53; --accent:#7A3E2E; --line:#D3CCC0;
+       --f-text:"Literata", Georgia, serif; --f-ui:"Hanken Grotesk", system-ui, sans-serif;
+       --rule: 1px solid var(--line); --radius: 999px; --cover-radius: 4px; --cover-shadow: 0 18px 30px -18px rgba(36,33,29,.55);
+       --title-font: 600 42px/1.08 "Literata", serif; --title-track: -.015em; --h4-font: 600 22px/1.2 "Literata", serif;
+       --card-title: 600 17px/1.25 "Literata", serif; --btn-bg:#7A3E2E; --btn-fg:#FFFFFF;
+       --wm-font: 600 17px/1 "Literata", serif; --wm-track: 0; --wm-case: none; }
+  .C .s-hero { background: linear-gradient(180deg, #E3DCCF 0, var(--bg) 100%); border-radius: 0 0 28px 28px; }
+  .C .s-cards .s-card { background: var(--surface); padding: 14px; border-radius: 14px; }
+
+  @media (max-width: 980px) { .dir-body { grid-template-columns: 1fr; } .dir-side { border-right:0; border-bottom:1px solid var(--doc-line);} .s-cards{grid-template-columns: repeat(2,1fr);} .s-hero{grid-template-columns: 140px 1fr;} .s-nav{display:none;} .grid2{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="mv-logo" viewBox="0 0 512 512">{{LOGO_PATH}}</symbol></svg>
+<div class="concept-bar">KONCEPCIÓTERV – NEM HIVATALOS · Belső munkaanyag Tamás számára</div>
+<main class="doc">
+  <p class="meta">Magvető redesign · Fázis 2 – Brand exploration · v1 · 2026-11-12</p>
+  <h1>Brand exploration: három irány</h1>
+  <p class="lead">Feladat: új vizuális identitás a jelenlegi „m” jel megtartásával. Modern, de nem hivalkodó; illeszkedjen a Magvető méretéhez és szerepéhez. Ez a dokumentum a kiindulópontot, a nemzetközi benchmarkot, az alapelveket és három kidolgozott irányt mutat be – a végén önellenőrzés a célokhoz és a döntési kérdések.</p>
+
+  <h2>1. Kiindulópont</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Kik ők? (a Kiadóról oldal és nyilvános források alapján)</h3>
+      <ul>
+        <li>1955-ben alapított, a kortárs magyar szépirodalom egyik meghatározó háza; ma a Líra-csoport tagja.</li>
+        <li>Két irodalmi Nobel-díjas szerző kiadója: Kertész Imre (2002) és Krasznahorkai László (2025).</li>
+        <li>Saját sorozatok (pl. Világkönyvtár, Új Termés, Tények és Tanúk, Időmérték), debütáló szerzők gondozása, klasszikusok életben tartása, világirodalom.</li>
+        <li>Méret: közepes, irodalmi fókuszú kiadó – nem tömegpiaci brand. Hangnem: magabiztos, de visszafogott.</li>
+        <li>Saját mottó a mostani oldalon: <i>„Csak az ember olvas...”</i></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Mi nem működik most? (brand + a11y szemmel)</h3>
+      <ul>
+        <li>A menüpontok <b>képként</b> vannak kirakva, üres alt szöveggel → képernyőolvasóval a fő navigáció néma, nagyításnál pixeles.</li>
+        <li>Fix 979 px széles, táblázatos layout → mobilon nem használható.</li>
+        <li>Nincs színrendszer: a sárgászöld, szürke és mustár elemek véletlenszerűek; a borítók versenyeznek a díszítéssel.</li>
+        <li>Egy oldalon 3–4 reklámbanner és ismétlődő „kiemelt” dobozok → a tartalom hierarchiája elvész.</li>
+        <li>A logó jó: erős, karakteres, egyedi – ez az egyetlen megtartandó elem, és jól elbírja a csendes környezetet.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Nemzetközi benchmark</h2>
+  <p>Hasonló súlyú irodalmi kiadók, ahol a design szolgálja az irodalmat. A „mit veszünk át” oszlop a lényeg; a vizuális jellemzés a saját szakmai értékelésem.</p>
+  <table>
+    <tr><th>Kiadó</th><th>Jellemző</th><th>Mit veszünk át</th><th>Mit nem</th></tr>
+    <tr><td><b>Fitzcarraldo Editions</b> (UK)</td><td>Egy szín + egy betűtípus viszi az egész listát; szigorú, könyves tipográfia. Lapos IA: Fiction / Essays / Poetry / Authors / Prizes / News&nbsp;&amp;&nbsp;Events.</td><td>Radikális egyszerűség, kevés szín, a cím „dolgozik”. Sorozat/műfaj mint első szintű navigáció.</td><td>Webshop-központúság.</td></tr>
+    <tr><td><b>Suhrkamp</b> (DE)</td><td>Erős tipográfiai örökség (Fleckhaus), sűrű, de rendezett tartalomblokkok: Neuerscheinungen, Bestseller, Themen, Entdecken.</td><td>Tematikus válogatások, „Újdonságok” és „Legolvasottabb” tiszta szétválasztása.</td><td>Túl sok promóciós sáv.</td></tr>
+    <tr><td><b>Adelphi</b> (IT)</td><td>Klasszikus, nyugodt, papírszerű; rövid fő menü: Chi siamo, Catalogo, Novità, Anteprime, Autori, Eventi.</td><td>Rövid, egyértelmű menü; „Előkészületben” (Anteprime) mint önálló pont.</td><td>Minimális vizuális hierarchia mobilon.</td></tr>
+    <tr><td><b>Wagenbach</b> (DE)</td><td>Független, személyes hang; sorozatok (Quartbuch, SALTO) mint vizuális egységek.</td><td>A sorozatok mint márkán belüli „al-identitások”.</td><td>Hírlevélszerű, hosszú kezdőlap.</td></tr>
+    <tr><td><b>New Directions</b> (US)</td><td>1936 óta működő ház, megújított identitás logóval, palettával és borító-rácsrendszerrel.</td><td>Örökség + kortárs rendszer együtt; egy rácsrendszer a sokféle borítónak.</td><td>—</td></tr>
+    <tr><td><b>Anagrama</b> (ES)</td><td>Tiszta katalógus, sok szerkesztett tartalom (Itinerarios, podcast, videó).</td><td>Szerkesztett ajánlók, díjak (pl. saját díj) kiemelése.</td><td>Túl sok tartalomtípus egy MVP-hez.</td></tr>
+    <tr><td><b>And Other Stories</b> (UK)</td><td>Egyszerű fő menü: Books, Authors, About, News, Events; közösségi elemek.</td><td>Books / Authors egyenrangú belépési pontként.</td><td>Előfizetési modell (nem releváns).</td></tr>
+    <tr><td><b>Graywolf Press</b> (US)</td><td>2026 őszén új identitás; küldetés-központú kezdőlap.</td><td>Egymondatos önmeghatározás a kezdőlapon.</td><td>Adománygyűjtő fókusz.</td></tr>
+  </table>
+  <div class="note"><b>Közös minta:</b> a legjobb irodalmi kiadói oldalak (1) a borítót és a szerző nevét teszik hőssé, (2) 5–7 pontos, szöveges fő menüt használnak, (3) a keresés mindig látható, (4) egy-két színnel dolgoznak, és (5) a tipográfia hordozza a karaktert, nem a díszítés.</div>
+
+  <h2>3. Brand alapelvek</h2>
+  <div class="grid2">
+    <div class="card"><h3>1. Az irodalom az első</h3><p>A borító, a cím és a szerző a hős. A felület hátrébb lép: semleges háttér, kevés keret, sok levegő.</p></div>
+    <div class="card"><h3>2. Örökség, nem nosztalgia</h3><p>A 70 éves múlt a tipográfia minőségében látszik (jó serif, finom arányok), nem régies díszítésben.</p></div>
+    <div class="card"><h3>3. Egy jel, egy szín</h3><p>Az „m” jel fekete-fehér marad. Egyetlen kiemelő szín – csak funkcióra (link, fókusz, aktív állapot), nem dekorációra.</p></div>
+    <div class="card"><h3>4. Mindenkinek olvasható</h3><p>WCAG 2.2 AA minimum (szöveg ≥ 4.5:1), valódi szöveges navigáció, látható fókusz, 16 px+ olvasótext, teljes magyar ékezetkészlet (ő, ű).</p></div>
+  </div>
+
+  <h2>4. A három irány</h2>
+  <p>Mindhárom ugyanazt a valós tartalmat mutatja (Mácsai Pál: <i>Két kép között</i>, és a mostani kezdőlap „Újdonságok” blokkjának könyvei), hogy csak a vizuális nyelv különbözzön. A borítók a magveto.hu-ról töltődnek.</p>
+
+  {{DIRECTIONS}}
+
+  <h2>5. Önellenőrzés a célokhoz</h2>
+  <table>
+    <tr><th>Kritérium (a briefből)</th><th>A – Papír</th><th>B – Kontraszt</th><th>C – Polc</th></tr>
+    <tr><td>Modern</td><td class="mid">Közepes – klasszikus, de friss arányokkal</td><td class="ok">Erős</td><td class="ok">Erős</td></tr>
+    <tr><td>Nem hivalkodó</td><td class="ok">Nagyon</td><td class="mid">Határeset – a nagy grotesk és a jelzőszín hangos lehet</td><td class="ok">Igen</td></tr>
+    <tr><td>Illik a Magvető méretéhez / identitásához (irodalmi, örökség)</td><td class="ok">Leginkább</td><td class="mid">Inkább kortárs/független kiadói hang</td><td class="mid">Barátságos, de kevésbé „irodalmi tekintély”</td></tr>
+    <tr><td>Illik a logóhoz (vastag, talpas „m”)</td><td class="ok">Igen – serif a serifhez</td><td class="mid">Feszültség: talpas jel + talpatlan felirat (lehet szándékos kontraszt)</td><td class="ok">Igen</td></tr>
+    <tr><td>Borító a hős</td><td class="ok">Igen</td><td class="ok">Igen</td><td class="ok">Igen, a legmelegebben</td></tr>
+    <tr><td>Akadálymentes szín (szöveg ≥ 4.5:1)</td><td class="ok">Minden szövegpár AA (ink 15.4, másodlagos 6.1, kiemelő 6.4)</td><td class="ok">AA/AAA (ink 18.9, kiemelő 7.7); a lime csak háttérként fekete szöveggel (15.1)</td><td class="ok">AA (ink 13.4, másodlagos 5.5, kiemelő 6.9)</td></tr>
+    <tr><td>Megvalósíthatóság 1 hét alatt</td><td class="ok">Igen</td><td class="ok">Igen</td><td class="ok">Igen (több árnyék/kártya → kicsit több finomhangolás)</td></tr>
+    <tr><td>Ingyenes, magyar ékezetbiztos betűk</td><td class="ok">Newsreader + Instrument Sans (Google Fonts, OFL)</td><td class="ok">Schibsted Grotesk + Source Serif 4 (OFL)</td><td class="ok">Literata + Hanken Grotesk (OFL)</td></tr>
+  </table>
+
+  <h2>6. Javaslatom és a döntési pontok</h2>
+  <div class="note">
+    <p><b>Javaslat: „A – Papír” irány</b>, a B irányból egy elemmel: a szigorú, vastag elválasztó vonalakkal a szekciók között (rendet ad, és modernebbé teszi). Indoklás: ez illik legjobban a Magvető örökségéhez és a logó talpas karakteréhez, ez a legkevésbé hivalkodó, és minden színpár bőven teljesíti az AA-t. Bizonyosság: kb. 70% – a B irány erősebb „wow”-t adna egy pitchen, de nagyobb az esélye, hogy a kiadó idegennek érzi.</p>
+  </div>
+  <p><b>Amit tőled kérek:</b></p>
+  <ol>
+    <li>Melyik irány (vagy kombináció) menjen tovább?</li>
+    <li>A felirat: a mostani nagybetűs talpatlan „MAGVETŐ KIADÓ” helyett az új betűvel szedett „Magvető” (mint a mintákban) rendben van?</li>
+    <li><b>Tartalom megjelenítése:</b> a forrásban vannak gépelési sajátosságok (pl. <code>,,Ebben</code> a „ helyett, hiányzó szóköz vessző után, csupa nagybetűs „MÁCSAI PÁL”, fordított névsorrend „Ernaux, Annie”). Rendben van, ha <b>csak a tipográfiát</b> igazítom (idézőjel, szóköz, kis-nagybetű, a szerzőnév a kártyákon természetes sorrendben), a szöveget szóra pontosan megtartva? A mintákban már így szerepel.</li>
+    <li>Bármi, ami irodalmi/tartalmi szempontból nem stimmel (pl. hangnem, a borítók kezelése)?</li>
+  </ol>
+</main>
+</body>
+</html>

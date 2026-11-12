@@ -1,0 +1,30 @@
+name: Tartalom leszedése (magveto.hu)
+on:
+  workflow_dispatch:
+    inputs:
+      works:
+        description: "none | scope | all"
+        default: "scope"
+      list_size:
+        default: "50"
+      press:
+        default: "50"
+permissions:
+  contents: write
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests beautifulsoup4 pillow
+      - run: python scraper/scrape.py --works "${{ inputs.works }}" --list-size "${{ inputs.list_size }}" --press "${{ inputs.press }}"
+      - name: Commit
+        run: |
+          git config user.name "content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+          git add content public/media scraper/raw.tar.gz
+          git commit -m "content: snapshot magveto.hu ($(date -u +%F))" || echo "nincs változás"
+          git push
