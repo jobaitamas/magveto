@@ -92,7 +92,8 @@ Kontextus-forrás az identitáshoz: https://magveto.hu/index.php?action=kiadorol
 | 2026-11-12 | Vercel bekötve: **https://magveto-koncepcio.vercel.app/** (minden push a `main`-re automatikusan élesít) | Tamás |
 | 2026-11-12 | Fázis 4 (design system + kezdőlap + kiadvány aloldal) **jóváhagyva** | Tamás |
 | 2026-11-12 | Kiadványok alapértelmezett rendezése: megjelent könyvek a megjelenés szerint csökkenőben, az előkészületben lévők a végén (a forrásoldal is így kezd); a teljes 699 kiadvány látszik (nem csak 50) | Claude |
-| 2026-11-12 | Telefonszámok: a forrás szerinti alakban jelennek meg; a kattintható hívószámhoz +36 1 előhívó (budapesti 7 jegyű számok) | Claude |
+| 2026-11-12 | Telefonszámok: megjelenítés és hívószám is **+36 1 XXX XXXX** alakban (`tel:` link – mobilon a telefon maga kérdez rá a hívásra) | Tamás |
+| 2026-11-12 | Kiadványok sorrendje jóváhagyva (megjelentek elöl). Állapot-címke egy sorban a chipekkel | Tamás |
 | 2026-11-12 | Betűk: Google Fonts helyett önhosztolt @fontsource csomagok (npm-ről elérhetők, gyorsabb, GDPR-barátabb) | Claude |
 
 ## 7b. Forrásoldal-szerkezet (felderítve, a scraperhez)

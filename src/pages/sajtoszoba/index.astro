@@ -3,7 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import Mail from '../../components/Mail.astro';
 import { press, bookById } from '../../lib/data';
-import { pressContacts, telHref } from '../../lib/contact';
+import { pressContacts, telHref, telDisplay } from '../../lib/contact';
 import { huDate, fold, collator } from '../../lib/text';
 const sources = [...new Set(press.map((p) => p.source).filter(Boolean))].sort((a, b) => collator.compare(a, b));
 ---
@@ -41,7 +41,7 @@ const sources = [...new Set(press.map((p) => p.source).filter(Boolean))].sort((a
         {pressContacts.map((c) => (
           <div class="contact__p">
             <p class="contact__n">{c.name}</p>
-            {c.phone && <p><a href={`tel:${telHref(c.phone)}`}>{c.phone}</a></p>}
+            {c.phone && <p><a href={`tel:${telHref(c.phone)}`}>{telDisplay(c.phone)}</a></p>}
             {c.mail && <p><Mail mail={c.mail} /></p>}
           </div>
         ))}

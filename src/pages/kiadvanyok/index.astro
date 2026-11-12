@@ -16,12 +16,12 @@ const cats = categories.filter((c) => c.bookIds.length > 0).sort((a, b) => b.boo
     </header>
 
     <form class="tools" data-tools>
-      <fieldset class="tools__f">
-        <legend class="tools__l">Állapot</legend>
+      <div class="tools__f" role="group" aria-labelledby="allapot-l">
+        <span class="tools__l" id="allapot-l">Állapot</span>
         <label class="tog"><input type="checkbox" name="allapot" value="megjelent" /> <span>Megjelent</span></label>
         <label class="tog"><input type="checkbox" name="allapot" value="elokeszuletben" /> <span>Előkészületben</span></label>
         <label class="tog"><input type="checkbox" name="ekonyv" value="1" /> <span>E-könyvben is</span></label>
-      </fieldset>
+      </div>
       <div class="tools__sort">
         <label class="tools__l" for="rendezes">Rendezés</label>
         <select id="rendezes" name="rendezes">
@@ -120,8 +120,8 @@ const cats = categories.filter((c) => c.bookIds.length > 0).sort((a, b) => b.boo
   .pg__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
   .pg__head h1 { font-size: var(--t-h1); }
   .tools { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--s-4); margin: var(--s-5) 0 var(--s-6); padding: var(--s-4) 0; border-block: var(--rule); }
-  .tools__f { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
-  .tools__l { font: 600 var(--t-micro)/1 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--c-graphite); margin-right: var(--s-2); padding: 0; }
+  .tools__f { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+  .tools__l { font: 600 var(--t-micro)/1 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--c-graphite); margin-right: var(--s-3); padding: 0; }
   .tog { position: relative; }
   .tog input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
   .tog span { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--s-4); border: 1px solid var(--c-control); border-radius: 99px; font: 500 var(--t-small)/1 var(--f-sans); }

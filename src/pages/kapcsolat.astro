@@ -2,7 +2,7 @@
 // Kapcsolat (IA 4.8): a magveto.hu Kapcsolat oldalának adatai szerepkörök szerint tagolva.
 import Base from '../layouts/Base.astro';
 import Mail from '../components/Mail.astro';
-import { company, groups, telHref } from '../lib/contact';
+import { company, groups, telHref, telDisplay } from '../lib/contact';
 const mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(company.address.replace('4-8.', '4–8') + ', Magyarország');
 const general = groups.find((g) => g.title === 'Szerkesztőségi titkár')!;
 ---
@@ -18,7 +18,7 @@ const general = groups.find((g) => g.title === 'Szerkesztőségi titkár')!;
       <section class="card" aria-labelledby="alt">
         <h2 id="alt" class="card__h">Általános megkeresés</h2>
         {general.people.map((p) => <>
-          <p>{p.phone && <a href={`tel:${telHref(p.phone)}`}>{p.phone}</a>}</p>
+          <p>{p.phone && <a href={`tel:${telHref(p.phone)}`}>{telDisplay(p.phone)}</a>}</p>
           {p.mail && <p><Mail mail={p.mail} /></p>}
           <p class="meta">Szerkesztőségi titkár: {p.name}</p>
         </>)}
@@ -33,11 +33,11 @@ const general = groups.find((g) => g.title === 'Szerkesztőségi titkár')!;
           {g.people.map((p) => (
             <div class="person">
               <p class="person__n">{p.name}{p.role && <span class="muted"> – {p.role}</span>}</p>
-              {p.phone && <p><a href={`tel:${telHref(p.phone)}`}>{p.phone}</a></p>}
+              {p.phone && <p><a href={`tel:${telHref(p.phone)}`}>{telDisplay(p.phone)}</a></p>}
               {p.mail && <p><Mail mail={p.mail} /></p>}
             </div>
           ))}
-          {g.phones && <p>Telefon: {g.phones.map((ph, i) => <>{i > 0 && ', '}<a href={`tel:${telHref(ph)}`}>{ph}</a></>)}</p>}
+          {g.phones && <p>{g.phones.map((ph, i) => <>{i > 0 && ', '}<a href={`tel:${telHref(ph)}`}>{telDisplay(ph)}</a></>)}</p>}
           {g.mail && <p><Mail mail={g.mail} /></p>}
         </section>
       ))}
