@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Magvető – IA, flow-k, wireframe-ek v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font: 15px/1.55 "Instrument Sans", system-ui, sans-serif; color:#1b1b1b; background:#fafafa; }
+  .bar { background:#1b1b1b; color:#fff; font-size:12px; text-align:center; padding:6px; letter-spacing:.04em; }
+  .doc { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+  h1 { font-size: 32px; line-height:1.15; margin: 22px 0 6px; }
+  h2 { font-size: 22px; margin: 54px 0 12px; padding-top: 16px; border-top: 1px solid #e3e3e3; }
+  h3 { font-size: 16px; margin: 22px 0 8px; }
+  p, li { max-width: 80ch; }
+  .meta { color:#666; font-size: 13px; }
+  .lead { font-size: 17px; color:#555; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background:#fff; }
+  th, td { text-align:left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid #e6e6e6; }
+  th { background:#f1f1f1; font-weight:600; }
+  code { font-size: 13px; background:#efefef; padding: 1px 5px; border-radius: 4px; }
+  .note { border-left: 3px solid #1b1b1b; background:#fff; padding: 10px 14px; margin: 14px 0; }
+  .q { border-left: 3px solid #A4281B; background:#fff; padding: 10px 14px; margin: 14px 0; }
+  .cols { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card { background:#fff; border:1px solid #e3e3e3; border-radius: 10px; padding: 16px 18px; }
+
+  /* sitemap */
+  .tree { font-size: 14px; background:#fff; border:1px solid #e3e3e3; border-radius:10px; padding: 16px 20px; }
+  .tree ul { list-style: none; margin: 0; padding-left: 22px; border-left: 1px dashed #bbb; }
+  .tree > ul { border-left: 0; padding-left: 0; }
+  .tree li { margin: 6px 0; max-width:none; }
+  .tree .pg { display:inline-block; background:#1b1b1b; color:#fff; border-radius: 4px; padding: 2px 8px; font-weight:600; }
+  .tree .pg.sub { background:#fff; color:#1b1b1b; border:1.5px solid #1b1b1b; }
+  .tree .pg.new { background:#A4281B; }
+  .tree .pg.out { background:#fff; color:#888; border:1.5px dashed #aaa; font-weight:400; }
+  .tree .url { color:#666; font-family: ui-monospace, monospace; font-size: 12px; margin-left: 6px; }
+
+  /* flow */
+  .flow { display:flex; flex-wrap: wrap; align-items: stretch; gap: 0; margin: 10px 0 6px; }
+  .step { background:#fff; border:1.5px solid #1b1b1b; border-radius: 8px; padding: 10px 12px; width: 210px; font-size: 13px; }
+  .step b { display:block; font-size: 14px; margin-bottom: 4px; }
+  .arrow { align-self: center; padding: 0 8px; font-size: 20px; color:#888; }
+  .edge { font-size: 13px; color:#444; }
+
+  /* wireframes */
+  .wfrow { display:grid; grid-template-columns: 1fr 260px; gap: 22px; align-items: start; margin: 12px 0 8px; }
+  .wf { background:#fff; border: 1.5px solid #999; border-radius: 6px; overflow: hidden; font-size: 12px; color:#444; }
+  .wf.m { width: 260px; }
+  .wf .cb { background:#444; color:#fff; text-align:center; font-size: 10px; padding: 3px; }
+  .wf .hd { display:flex; align-items:center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #ccc; }
+  .wf .logo { width: 70px; height: 18px; background:#1b1b1b; border-radius:2px; }
+  .wf .nav { display:flex; gap: 10px; margin-left:auto; font-weight:600; color:#333; }
+  .wf .srch { border: 1.5px solid #888; border-radius: 3px; padding: 3px 8px; color:#888; min-width: 130px; }
+  .wf .ic { width: 18px; height: 18px; border:1.5px solid #888; border-radius:3px; }
+  .wf .body { padding: 14px; }
+  .wf .sec { border-top: 2px solid #ccc; padding-top: 8px; margin-top: 14px; }
+  .wf .sh { display:flex; justify-content: space-between; font-weight:700; color:#222; margin-bottom: 8px; }
+  .wf .sh span { font-weight: 500; color:#A4281B; }
+  .ph { background: repeating-linear-gradient(45deg, #eee, #eee 6px, #e2e2e2 6px, #e2e2e2 12px); border:1px solid #d0d0d0; border-radius: 2px; }
+  .cov { aspect-ratio: 2/3; }
+  .ln { height: 8px; background:#d6d6d6; border-radius: 4px; margin: 5px 0; }
+  .ln.d { background:#9a9a9a; } .ln.t { height: 14px; background:#555; } .ln.s { width: 60%; } .ln.xs { width: 35%; }
+  .g { display:grid; gap: 10px; }
+  .g4 { grid-template-columns: repeat(4, 1fr); } .g5 { grid-template-columns: repeat(5, 1fr); } .g3 { grid-template-columns: repeat(3,1fr);} .g2 { grid-template-columns: repeat(2,1fr);}
+  .lbl { font-size: 11px; font-weight: 700; color:#222; margin-bottom: 4px; }
+  .pill { display:inline-block; border:1.5px solid #888; border-radius: 99px; padding: 1px 8px; margin: 2px 3px 2px 0; font-size: 11px; }
+  .pill.on { background:#1b1b1b; color:#fff; border-color:#1b1b1b; }
+  .btn { display:inline-block; background:#1b1b1b; color:#fff; padding: 5px 10px; border-radius: 2px; font-weight: 600; font-size: 11px; }
+  .btn.o { background:#fff; color:#1b1b1b; border:1.5px solid #1b1b1b; }
+  .ann { counter-increment: ann; }
+  .tag { display:inline-block; background:#A4281B; color:#fff; border-radius: 99px; width: 18px; height: 18px; line-height: 18px; text-align:center; font-size: 11px; font-weight:700; margin-right: 4px; }
+  .notes { font-size: 13px; }
+  .notes li { margin: 4px 0; }
+  .ft { background:#f0f0f0; padding: 12px 14px; display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; border-top:1px solid #ccc; }
+  @media (max-width: 900px) { .wfrow, .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="bar">KONCEPCIÓTERV – NEM HIVATALOS · Belső munkaanyag</div>
+<main class="doc">
+<p class="meta">Magvető redesign · Fázis 3 – Információs architektúra, flow-k, wireframe-ek · v1 · 2026-11-12</p>
+<h1>IA, flow-k és wireframe-ek</h1>
+<p class="lead">Ez a dokumentum rögzíti, mi hol lesz és hogyan jut el a látogató a könyvig vagy a szerzőig. Szándékosan szürke és vázlatos: itt a struktúráról döntünk, a vizualitás (Papír irány) a 4. fázisban kerül rá.</p>
+
+<h2>1. Oldaltérkép és URL-ek</h2>
+<div class="cols">
+<div class="tree">
+<ul>
+ <li><span class="pg">Kezdőlap</span><span class="url">/</span>
+  <ul>
+   <li><span class="pg">Kiadványok</span><span class="url">/kiadvanyok</span> <span class="meta">szűrők az URL-ben: ?kategoria=regeny&amp;rendezes=cim</span>
+     <ul><li><span class="pg sub">Kiadvány aloldal</span><span class="url">/konyvek/ket-kep-kozott</span></li></ul></li>
+   <li><span class="pg">Szerzők</span><span class="url">/szerzok</span> <span class="meta">#B, #Cs… betűhorgonyok</span>
+     <ul><li><span class="pg sub">Szerző aloldal</span><span class="url">/szerzok/macsai-pal</span></li></ul></li>
+   <li><span class="pg">Sajtószoba</span><span class="url">/sajtoszoba</span>
+     <ul><li><span class="pg sub">Sajtótétel</span><span class="url">/sajtoszoba/9036-hazat-keresve…</span></li></ul></li>
+   <li><span class="pg">Kapcsolat</span><span class="url">/kapcsolat</span></li>
+   <li><span class="pg new">Keresés – találati lista</span><span class="url">/kereses?q=macsai</span> <span class="meta">új</span></li>
+   <li><span class="pg out">A kiadóról, E-könyv, Hírek, Kéziratról, English</span> <span class="meta">nincs az MVP-ben → lásd 1. kérdés</span></li>
+  </ul></li>
+</ul>
+</div>
+<div class="card">
+<h3 style="margin-top:0">Döntések és indoklás</h3>
+<ul class="notes">
+ <li><b>Lapos, 4 pontos fő menü</b> (Kiadványok, Szerzők, Sajtószoba, Kapcsolat) + mindig látható kereső. A benchmark kiadóknál 5–7 pont a jellemző; nálunk az MVP scope miatt 4.</li>
+ <li><b>Szöveges, olvasható URL-ek</b> (<code>/konyvek/ket-kep-kozott</code>) a mostani <code>index.php?action=konyv&amp;id=…</code> helyett: megosztható, érthető, SEO-barát. A <code>/konyvek/</code> előtag a mostani „barát” URL-ekkel (<code>konyvek/slug/id</code>) is rokon, így egy jövőbeli átirányítás egyszerű. Azonos című könyveknél (pl. két <i>Jadviga párnája</i>) a slug végére automatikusan kerül egy megkülönböztető szám.</li>
+ <li><b>A szűrők és a keresés az URL-ben élnek</b> → a vissza gomb működik, a találati lista linkelhető.</li>
+ <li><b>A „Kiemelt ajánlatok”, az „Újdonságok” és a karusszel</b> ma ugyanazt ismétli. Egy „Kiemelt” és egy „Újdonságok” szekcióvá vonjuk össze, ismétlés nélkül.</li>
+ <li><b>A karusszelt megszüntetjük</b> (automatikus léptetés = a11y- és figyelemprobléma). Helyette statikus, egyszerre látható kiemelés.</li>
+</ul>
+</div>
+</div>
+
+<h2>2. Globális elemek</h2>
+<div class="cols">
+<div class="card"><h3 style="margin-top:0">Fejléc</h3>
+<ul class="notes">
+ <li>Koncepció-sáv (vékony, a legtetején, minden oldalon).</li>
+ <li>Ugrólink: „Ugrás a tartalomra” (csak billentyűzetes fókuszra jelenik meg).</li>
+ <li>Logó (kezdőlap-link) · fő menü · kereső. Az aktuális menüpont jelölve (<code>aria-current</code>).</li>
+ <li><b>Kereső:</b> gépelés közben javaslatlista (3 szerző + 5 kiadvány, borítóval/fotóval), Enter → teljes találati lista. Ékezetfüggetlen és elgépelés-tűrő („macsai” → Mácsai Pál). Billentyűzettel teljesen kezelhető (ARIA combobox minta).</li>
+ <li>Mobil: logó · kereső ikon · menü ikon. A kereső teljes szélességben nyílik.</li>
+</ul></div>
+<div class="card"><h3 style="margin-top:0">Lábléc</h3>
+<ul class="notes">
+ <li>Magvető Könyvkiadó és Kereskedelmi Kft. · 1086 Budapest, Dankó u. 4–8. (a Kapcsolat oldalról).</li>
+ <li>Navigáció ismétlése · Facebook és X (a mostani oldal linkjei) · Líra-csoport linkek · Adatkezelési tájékoztató (a mostani PDF).</li>
+ <li>Koncepció-megjegyzés: „Ez egy nem hivatalos koncepcióterv. A tartalom forrása: magveto.hu.”</li>
+ <li><b>Hírlevél:</b> a mostani oldalon csak egy link a Líra feliratkozó oldalára → ugyanazt a linket tesszük ki, saját űrlap nélkül (nincs adatgyűjtés).</li>
+</ul></div>
+</div>
+
+<h2>3. A három flow</h2>
+<h3>Flow 1 – Főoldal → Kiadványok → Kiadvány → Szerző</h3>
+<div class="flow">
+ <div class="step"><b>Kezdőlap</b>Menü: „Kiadványok”, vagy egy szekció „Összes kiadvány →” linkje</div><div class="arrow">→</div>
+ <div class="step"><b>Kiadványok</b>Borítórács, szűrés kategória / sorozat szerint, rendezés, „Továbbiak betöltése”</div><div class="arrow">→</div>
+ <div class="step"><b>Kiadvány aloldal</b>Szerzőnév (link) a cím fölött + „A szerzőről” doboz</div><div class="arrow">→</div>
+ <div class="step"><b>Szerző aloldal</b>Bio, a szerző művei, sajtóvisszhang</div>
+</div>
+<p class="edge"><b>Szélső esetek:</b> több szerzős könyv → minden név külön link · a forrásban nincs szerző-azonosító → név alapján párosítunk; ha így sincs meg, a név link nélkül jelenik meg (nem zsákutca) · előkészületben lévő könyv → „Várható megjelenés” és „Tervezett ár” címkével.</p>
+
+<h3>Flow 2 – Főoldal → Szerzők → Szerző → Kiadvány</h3>
+<div class="flow">
+ <div class="step"><b>Kezdőlap</b>Menü: „Szerzők”</div><div class="arrow">→</div>
+ <div class="step"><b>Szerzők</b>A–Z betűsor magyar ábécével (Cs, Gy, Ny, Sz, Zs külön), azonnali szűrés, minden szerzőnél rövid bemutatás</div><div class="arrow">→</div>
+ <div class="step"><b>Szerző aloldal</b>„Művei a Magvetőnél” borítórács</div><div class="arrow">→</div>
+ <div class="step"><b>Kiadvány aloldal</b>Breadcrumb vissza a szerzőhöz</div>
+</div>
+<p class="edge"><b>Szélső esetek:</b> nincs fotó → tipográfiai monogram (nem kitalált kép) · nincs hosszú bio → csak a rövid bemutatás · olyan mű, amelynek nincs leszedett aloldala → lásd 2. kérdés.</p>
+
+<h3>Flow 3 – Keresés → Találati lista → Kiadvány vagy Szerző</h3>
+<div class="flow">
+ <div class="step"><b>Kereső (bármely oldalon)</b>Gépelés közben javaslatok; egy javaslatra kattintva rögtön az aloldal nyílik</div><div class="arrow">→</div>
+ <div class="step"><b>Találati lista</b>Csoportosítva: Szerzők (n) · Kiadványok (n); a találat kiemelve; szűrő fülek</div><div class="arrow">→</div>
+ <div class="step"><b>Kiadvány vagy Szerző aloldal</b></div>
+</div>
+<p class="edge"><b>Mire keres:</b> cím, alcím, szerző, fordító, ISBN; szerzőnél név és rövid bemutatás. <b>Szélső esetek:</b> 0 találat → a keresett kifejezés megismétlése, javaslatok (ékezet nélkül is keress, rövidebb kifejezés), és a valós Toplista mint kiindulópont · 1–2 karakter → már javasol, nem dob hibát (a mostani oldal 3 karakter alatt hibát dob) · üres keresés → nem küld el semmit.</p>
+
+<h2>4. Oldalsablonok – wireframe-ek</h2>
+<p>Bal oldalon asztali, jobb oldalon mobil nézet. A piros számok a megjegyzésekre utalnak. A tartalomblokkok a mostani oldalon valóban meglévő adatokból épülnek.</p>
+
+<!-- KEZDŐLAP -->
+<h3>4.1 Kezdőlap</h3>
+<div class="wfrow">
+ <div class="wf"><div class="cb">Koncepcióterv – nem hivatalos oldal</div>
+  <div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body">
+   <div class="g" style="grid-template-columns: 1.1fr 1fr; gap:16px"><div><span class="tag">1</span><span class="lbl">KIEMELT</span><div class="g" style="grid-template-columns: 120px 1fr"><div class="ph cov"></div><div><div class="ln xs"></div><div class="ln t"></div><div class="ln s"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div style="margin-top:8px"><span class="btn">Részletek</span></div></div></div></div>
+   <div><div class="g g5" style="grid-template-columns: repeat(5,1fr)"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div><div class="meta" style="font-size:11px;margin-top:6px">a további 5 kiemelt könyv, egyszerre látható</div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">2</span>Újdonságok</div><span>Összes kiadvány →</span></div><div class="g g4"><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div></div></div>
+   <div class="g" style="grid-template-columns: 1fr 1fr; gap:18px">
+    <div class="sec"><div class="sh"><div><span class="tag">3</span>Előkészületben</div></div><div class="g g2"><div class="g" style="grid-template-columns:50px 1fr"><div class="ph cov"></div><div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div></div></div><div class="g" style="grid-template-columns:50px 1fr"><div class="ph cov"></div><div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div></div></div></div></div>
+    <div class="sec"><div class="sh"><div><span class="tag">4</span>Toplista</div></div><div class="g g2"><div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div></div></div>
+   </div>
+   <div class="g" style="grid-template-columns: 1fr 1fr; gap:18px">
+    <div class="sec"><div class="sh"><div><span class="tag">5</span>Események</div></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div></div>
+    <div class="sec"><div class="sh"><div><span class="tag">6</span>Sajtóvisszhang</div><span>Sajtószoba →</span></div><div class="ln d"></div><div class="ln s"></div><div class="ln d"></div><div class="ln s"></div></div>
+   </div>
+   <div class="sec"><div class="sh"><div><span class="tag">7</span>Videó · Hírlevél</div></div><div class="g g2"><div class="ph" style="height:60px"></div><div><div class="ln s"></div><span class="btn o">Feliratkozás a Líránál ↗</span></div></div></div>
+  </div>
+  <div class="ft"><div><div class="ln d"></div><div class="ln s"></div></div><div><div class="ln"></div><div class="ln"></div></div><div><div class="ln"></div><div class="ln"></div></div><div><div class="ln"></div><div class="ln s"></div></div></div>
+ </div>
+ <div class="wf m"><div class="cb">Koncepcióterv</div><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div>
+  <div class="body"><span class="lbl">KIEMELT</span><div class="ph cov" style="width:55%;margin:4px 0"></div><div class="ln xs"></div><div class="ln t"></div><div class="ln s"></div>
+  <div class="sec"><div class="sh">Újdonságok<span>→</span></div><div class="g" style="grid-template-columns: repeat(3, 1fr)"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div><div class="meta" style="font-size:10px">vízszintesen görgethető sor</div></div>
+  <div class="sec"><div class="sh">Előkészületben</div><div class="ln"></div><div class="ln s"></div></div>
+  <div class="sec"><div class="sh">Toplista</div><div class="ln"></div><div class="ln"></div><div class="ln s"></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Kiemelt</b> = a mostani karusszel 6 könyve: 1 nagy (borító, szerző, cím, fülszöveg-kivonat) + 5 kicsi, egyszerre látható, automatikus léptetés nélkül.</li>
+ <li><b>Újdonságok</b> = a mostani „Újdonságok” blokk könyvei, kiegészítve a „Kiemelt ajánlatok”-kal, ismétlések nélkül.</li>
+ <li><b>Előkészületben</b>: várható megjelenés, tervezett ár, tervezett oldalszám – a forrásból.</li>
+ <li><b>Toplista</b>: a mostani 10 tétel, helyezésszámmal.</li>
+ <li><b>Események</b>: a mostani eseménynaptár (dátum, időpont, cím, Facebook-esemény link ↗). A múltbeli eseményeket elrejtjük → lásd 3. kérdés.</li>
+ <li><b>Sajtóvisszhang</b>: a 3 legfrissebb sajtótétel. Ez új összekötés: a kezdőlap eddig nem mutatta a Sajtószobát.</li>
+ <li><b>Videó és hírlevél</b>: a mostani YouTube-videó és a Líra feliratkozó linkje. <b>A Líra-reklámbannereket kihagyjuk</b> → lásd 4. kérdés.</li>
+</ol>
+
+<!-- KIADVÁNYOK -->
+<h3>4.2 Kiadványok</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="ln t" style="width:30%"></div><div class="meta" style="font-size:11px">50 kiadvány</div>
+   <div class="g" style="grid-template-columns: 190px 1fr; gap: 18px; margin-top:10px">
+    <div><span class="tag">1</span><div class="lbl">Műfaj</div><span class="pill on">Mind</span><span class="pill">Regény</span><span class="pill">Novella</span><span class="pill">Vers</span><span class="pill">Esszé</span><span class="pill">+ további</span>
+     <div class="lbl" style="margin-top:10px">Sorozat, életmű</div><span class="pill">Tények és Tanúk</span><span class="pill">Időmérték</span><span class="pill">Magvető Zsebkönyvtár</span>
+     <div class="lbl" style="margin-top:10px">Állapot</div><span class="pill">Megjelent</span><span class="pill">Előkészületben</span><span class="pill">E-könyvben is</span></div>
+    <div><div style="display:flex;justify-content:space-between;margin-bottom:8px"><div><span class="tag">2</span>Szűrők: <span class="pill on">Regény ✕</span></div><div><span class="tag">3</span>Rendezés: Legújabb ▾</div></div>
+     <div class="g g4"><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div><div class="ln xs"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div><div class="ln xs"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div><div class="ln xs"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div><div class="ln xs"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div><div><div class="ph cov"></div><div class="ln xs"></div><div class="ln d s"></div></div></div>
+     <div style="text-align:center;margin-top:10px"><span class="tag">4</span><span class="btn o">Továbbiak betöltése (24 / 50)</span></div></div>
+   </div></div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div>
+  <div class="body"><div class="ln t" style="width:50%"></div><div style="display:flex;justify-content:space-between;margin:8px 0"><span class="btn o">Szűrés (1)</span><span class="btn o">Legújabb ▾</span></div><div class="g g2"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div><div class="meta" style="font-size:10px">a szűrők alsó panelben nyílnak</div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Szűrők</b> a mostani oldal 31 kategóriájából. Csoportosítva: <i>Műfaj</i> (pl. Regény, Novella, Vers, Esszé), <i>Sorozat / életmű</i> (pl. Tények és Tanúk, García Márquez életműkiadás), <i>Állapot</i> (Megjelent / Előkészületben / E-könyvben is – a könyvadatokból). A csoportosítás az én javaslatom → lásd 5. kérdés.</li>
+ <li><b>Aktív szűrők</b> chipként, egyenként törölhetők. Több szűrő egyszerre is működik.</li>
+ <li><b>Rendezés:</b> Legújabb (alapértelmezett) · Cím A–Z · Szerző A–Z – a mostani oldal három opciója, magyar ábécérenddel.</li>
+ <li>Lapozás helyett „Továbbiak betöltése”, a darabszám kiírásával; az URL követi az állapotot.</li>
+ <li>Kártya: borító, szerző, cím, alcím, ár. A teljes fülszöveg (ami ma a listán van) csak az aloldalon jelenik meg → a lista átláthatóbb.</li>
+</ol>
+
+<!-- KIADVÁNY -->
+<h3>4.3 Kiadvány aloldal</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="meta" style="font-size:11px"><span class="tag">1</span>Kezdőlap / Kiadványok / Két kép között</div>
+   <div class="g" style="grid-template-columns: 200px 1fr; gap: 20px; margin-top: 10px">
+    <div><div class="ph cov"></div></div>
+    <div><span class="tag">2</span><div class="ln xs d"></div><div class="ln t" style="width:70%"></div><div class="ln s"></div><div class="ln xs"></div>
+     <div class="card" style="padding:8px;margin:10px 0"><span class="tag">3</span><div class="g g4"><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div></div>
+     <span class="tag">4</span><span class="btn">Megvásárolom a Líránál ↗</span> <span class="btn o">E-könyv ↗</span>
+     <div style="margin-top:12px"><span class="tag">5</span><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln"></div><div class="ln xs"></div></div>
+     <div style="margin-top:6px"><span class="tag">6</span><span class="pill">Életrajz, memoár</span><span class="pill">Szépirodalom</span></div></div>
+   </div>
+   <div class="sec"><div class="sh"><div><span class="tag">7</span>A szerzőről</div></div><div class="g" style="grid-template-columns: 70px 1fr"><div class="ph" style="aspect-ratio:1;border-radius:50%"></div><div><div class="ln d s"></div><div class="ln"></div><div class="ln s"></div><div class="meta" style="font-size:11px;color:#A4281B">Mácsai Pál oldala →</div></div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">8</span>A szerző további művei</div></div><div class="g g5"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">9</span>Sajtóvisszhang</div></div><div class="ln d"></div><div class="ln s"></div></div>
+  </div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div>
+  <div class="body"><div class="ph cov" style="width:55%;margin:0 auto 8px"></div><div class="ln xs d"></div><div class="ln t"></div><div class="ln s"></div><span class="btn" style="display:block;text-align:center;margin:8px 0">Megvásárolom a Líránál ↗</span><div class="g g2"><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="sec"><div class="sh">A szerzőről</div><div class="ln"></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Breadcrumb</b> a forrás útvonal szerint: Kiadványokból érkezve „Kiadványok”, szerzőtől érkezve „Szerzők / Mácsai Pál”.</li>
+ <li><b>Szerző(k)</b> linkként a cím fölött, alatta cím, alcím (szlogen), fordító.</li>
+ <li><b>Adatok:</b> Megjelenés, Első kiadás dátuma, oldalszám, méret, ár, ISBN, „E-könyvben is”. A hiányzó mezők nem jelennek meg (nincs „–” vagy „N/A”).</li>
+ <li><b>Vásárlás:</b> a mostani Líra-link, külső linkként jelölve (↗, új lapon). Nincs saját kosár.</li>
+ <li><b>Fülszöveg</b> bekezdésekkel, kényelmes sorhosszal (max. kb. 70 karakter).</li>
+ <li><b>Kategóriacímkék</b> → a Kiadványok oldalra visznek, szűrve.</li>
+ <li><b>A szerzőről</b>: fotó vagy monogram, a szerzőlista rövid bemutatása, link a szerző oldalára (Flow 1).</li>
+ <li><b>A szerző további művei</b> (a szerző oldalának műlistájából).</li>
+ <li><b>Sajtóvisszhang</b>: azok a Sajtószoba-tételek, amelyek ehhez a könyvhöz kapcsolódnak. Ha nincs ilyen, a blokk nem jelenik meg.</li>
+</ol>
+
+<!-- SZERZŐK -->
+<h3>4.4 Szerzők</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="ln t" style="width:25%"></div><div class="meta" style="font-size:11px">252 szerző</div>
+   <div style="margin:10px 0"><span class="tag">1</span><span class="srch" style="display:inline-block;min-width:260px">Szűrés név szerint…</span></div>
+   <div style="margin-bottom:10px"><span class="tag">2</span><b>A Á B C Cs D E É F G Gy H I J K L M N Ny O Ö P R S Sz T U Ü V W Z Zs</b></div>
+   <div class="sec"><div class="sh">B</div><div class="g g3"><div><div class="ln d s"></div><div class="ln"></div><div class="ln xs"></div></div><div><div class="ln d s"></div><div class="ln"></div><div class="ln xs"></div></div><div><div class="ln d s"></div><div class="ln"></div><div class="ln xs"></div></div><div><div class="ln d s"></div><div class="ln"></div></div><div><div class="ln d s"></div><div class="ln"></div></div><div><div class="ln d s"></div><div class="ln"></div></div></div></div>
+   <div class="sec"><div class="sh">C</div><div class="g g3"><div><div class="ln d s"></div><div class="ln"></div></div><div><div class="ln d s"></div><div class="ln"></div></div></div></div>
+  </div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div>
+  <div class="body"><div class="ln t" style="width:40%"></div><span class="srch" style="display:block;margin:8px 0">Szűrés név szerint…</span><div class="meta" style="font-size:10px">A–Zs ugrósor vízszintesen görgethető, ragadós</div><div class="sec"><div class="sh">B</div><div class="ln d s"></div><div class="ln"></div><div class="ln d s"></div><div class="ln"></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Azonnali szűrés</b> gépelés közben, ékezetfüggetlenül („bodor” → Bodor Ádám, Bodor Johanna).</li>
+ <li><b>Magyar ábécé</b> szerinti betűcsoportok és rendezés (Cs, Gy, Ny, Sz, Zs külön betű). Az üres betűk halványan, nem kattinthatóan jelennek meg. Bejegyzés: név, életévek (ha a forrásban szerepelnek), rövid bemutatás. Fotó itt nincs, mert a 252 szerző nagy részénél valószínűleg hiányzik → a listán következetesen csak szöveg.</li>
+</ol>
+
+<!-- SZERZŐ -->
+<h3>4.5 Szerző aloldal</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="meta" style="font-size:11px">Kezdőlap / Szerzők / Závada Pál</div>
+   <div class="g" style="grid-template-columns: 180px 1fr; gap:20px; margin-top:10px"><div><span class="tag">1</span><div class="ph" style="aspect-ratio:3/4"></div><div class="meta" style="font-size:10px">Fotó: (forrásból, ha van)</div></div>
+    <div><div class="ln t" style="width:50%"></div><div class="ln xs"></div><span class="tag">2</span><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="lbl" style="margin-top:8px">Fontosabb díjai</div><div class="ln"></div><div class="ln"></div><div class="ln s"></div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">3</span>Művei a Magvetőnél (16)</div><span>Legújabb ▾</span></div><div class="g g5"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">4</span>Sajtóvisszhang</div></div><div class="ln d"></div><div class="ln s"></div></div></div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div>
+  <div class="body"><div class="g" style="grid-template-columns: 70px 1fr"><div class="ph" style="aspect-ratio:3/4"></div><div><div class="ln t"></div><div class="ln xs"></div></div></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="sec"><div class="sh">Művei (16)</div><div class="g g3"><div class="ph cov"></div><div class="ph cov"></div><div class="ph cov"></div></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Fotó</b> + fotós neve, ha a bio megadja (pl. „Fotó: Szilágyi Lenke”). Ha nincs fotó → monogram a brand tipográfiájával.</li>
+ <li><b>Bio</b>: rövid bemutatás + a hosszú bio (pl. díjak) változatlan szöveggel, tisztított formázással.</li>
+ <li><b>Művei</b> borítórácsban, megjelenés szerint rendezve; kattintásra a kiadvány aloldala (Flow 2).</li>
+ <li><b>Sajtóvisszhang</b> a szerző könyveihez kapcsolódó tételekből.</li>
+</ol>
+
+<!-- KERESÉS -->
+<h3>4.6 Keresés – javaslatlista és találati lista</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch" style="border-color:#A4281B;color:#222">⌕ macsai</div></div>
+  <div class="body"><div class="g" style="grid-template-columns: 1fr 300px; gap: 18px">
+   <div><span class="tag">2</span><div class="ln t" style="width:60%"></div><div class="meta" style="font-size:11px">„macsai” – 1 szerző, 2 kiadvány</div>
+    <div style="margin:8px 0"><span class="pill on">Mind (3)</span><span class="pill">Szerzők (1)</span><span class="pill">Kiadványok (2)</span></div>
+    <div class="sec"><div class="sh">Szerzők</div><div class="g" style="grid-template-columns: 40px 1fr"><div class="ph" style="aspect-ratio:1;border-radius:50%"></div><div><div class="ln d s"></div><div class="ln"></div></div></div></div>
+    <div class="sec"><div class="sh">Kiadványok</div><div class="g" style="grid-template-columns: 50px 1fr"><div class="ph cov"></div><div><div class="ln xs"></div><div class="ln d s"></div><div class="ln"></div></div><div class="ph cov"></div><div><div class="ln xs"></div><div class="ln d s"></div><div class="ln"></div></div></div></div></div>
+   <div class="card" style="padding:8px"><span class="tag">1</span><b>Javaslatlista (gépelés közben)</b><div class="lbl" style="margin-top:6px">SZERZŐK</div><div class="ln d s"></div><div class="lbl">KIADVÁNYOK</div><div class="g" style="grid-template-columns: 26px 1fr"><div class="ph cov"></div><div><div class="ln d"></div><div class="ln xs"></div></div><div class="ph cov"></div><div><div class="ln d"></div><div class="ln xs"></div></div></div><div style="margin-top:6px;color:#A4281B;font-weight:600">Összes találat (3) →</div></div>
+  </div></div></div>
+ <div class="wf m"><div class="hd"><span class="srch" style="flex:1">⌕ macsai</span><div class="ic"></div></div><div class="body"><div class="lbl">SZERZŐK</div><div class="ln d s"></div><div class="lbl" style="margin-top:8px">KIADVÁNYOK</div><div class="g" style="grid-template-columns: 30px 1fr"><div class="ph cov"></div><div><div class="ln d"></div></div><div class="ph cov"></div><div><div class="ln d"></div></div></div><span class="btn o" style="display:block;text-align:center;margin-top:8px">Összes találat</span></div></div>
+</div>
+<ol class="notes">
+ <li><b>Javaslatlista</b> a fejlécben, már 1–2 karaktertől; fel-le nyíl, Enter, Esc működik. Képernyőolvasónak bemondja a találatok számát.</li>
+ <li><b>Találati lista</b>: a kifejezés és a darabszám a címben, csoportok (Szerzők, Kiadványok), fülekkel szűrhető, a találat szövegrésze kiemelve. 0 találatnál segítő üres állapot (lásd Flow 3).</li>
+</ol>
+<div class="note"><b>Technikai megjegyzés (egyszerűen):</b> a keresés teljesen a böngészőben fut. Építéskor (build) készül egy kis „kereső-index” fájl a leszedett könyvekből és szerzőkből, és ezt a böngésző tölti be. Ezért nem kell hozzá szerver vagy adatbázis (Supabase sem), és gyors.</div>
+
+<!-- SAJTÓSZOBA -->
+<h3>4.7 Sajtószoba</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="g" style="grid-template-columns: 1fr 220px; gap:18px">
+   <div><div class="ln t" style="width:30%"></div><div style="margin:8px 0"><span class="tag">1</span><span class="srch" style="display:inline-block;min-width:200px">Keresés a sajtószobában…</span> <span class="pill">Forrás ▾</span></div>
+    <span class="tag">2</span><div class="g" style="grid-template-columns: 1fr 44px; border-bottom:1px solid #ddd; padding:6px 0"><div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div></div><div class="ph cov"></div></div>
+    <div class="g" style="grid-template-columns: 1fr 44px; border-bottom:1px solid #ddd; padding:6px 0"><div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div></div><div class="ph cov"></div></div>
+    <div class="g" style="grid-template-columns: 1fr 44px; padding:6px 0"><div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div></div><div class="ph cov"></div></div></div>
+   <div class="card" style="padding:10px"><span class="tag">3</span><b>Sajtókapcsolat</b><div class="lbl" style="margin-top:6px">PR és marketing</div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div>
+  </div>
+  <div class="sec"><div class="sh"><div><span class="tag">4</span>Sajtótétel aloldal</div></div><div class="g" style="grid-template-columns: 1fr 140px; gap:14px"><div><div class="ln xs"></div><div class="ln t"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><span class="btn o">A teljes cikk: Nepszava.hu ↗</span></div><div><div class="ph cov"></div><div class="ln xs"></div></div></div></div>
+  </div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div><div class="body"><div class="ln t" style="width:50%"></div><div class="ln xs"></div><div class="ln d"></div><div class="ln s"></div><div class="ln xs" style="margin-top:12px"></div><div class="ln d"></div><div class="ln s"></div><div class="card" style="padding:8px;margin-top:10px"><b>Sajtókapcsolat</b><div class="ln"></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Keresés és szűrés</b> forrás szerint (pl. Telex.hu, Litera, Élet és Irodalom – a tételek címéből).</li>
+ <li><b>Tétel</b>: dátum, forrás, cím, kapcsolódó könyv (kis borító, link). A legfrissebb 50 tétel.</li>
+ <li><b>Sajtókapcsolat</b> doboz: a Kapcsolat oldal „PR és marketing” elérhetőségei. Ez az újságírók elsődleges kérdése, ezért kerül ide is.</li>
+ <li><b>Tétel aloldal</b>: a mostani kivonat, forrássor, és „A teljes cikk” külső link az eredeti cikkre.</li>
+</ol>
+
+<!-- KAPCSOLAT -->
+<h3>4.8 Kapcsolat</h3>
+<div class="wfrow">
+ <div class="wf"><div class="hd"><div class="logo"></div><div class="nav">Kiadványok · Szerzők · Sajtószoba · Kapcsolat</div><div class="srch">⌕ Keresés…</div></div>
+  <div class="body"><div class="ln t" style="width:25%"></div>
+   <div class="g" style="grid-template-columns: 1fr 1fr; gap: 16px; margin-top:10px"><div class="card" style="padding:10px"><span class="tag">1</span><b>Magvető Könyvkiadó és Kereskedelmi Kft.</b><div class="ln"></div><div class="ln s"></div><span class="btn o">Útvonal ↗</span></div><div class="card" style="padding:10px"><b>Általános megkeresés</b><div class="ln"></div><div class="ln s"></div></div></div>
+   <div class="sec"><div class="sh"><div><span class="tag">2</span>Munkatársak</div></div><div class="g g3"><div class="card" style="padding:8px"><div class="lbl">IGAZGATÓ</div><div class="ln d s"></div></div><div class="card" style="padding:8px"><div class="lbl">FŐSZERKESZTŐ</div><div class="ln d s"></div><div class="ln"></div></div><div class="card" style="padding:8px"><div class="lbl">PR ÉS MARKETING</div><div class="ln d s"></div><div class="ln"></div></div><div class="card" style="padding:8px"><div class="lbl">KERESKEDELMI KÉPVISELET</div><div class="ln"></div><div class="ln"></div></div><div class="card" style="padding:8px"><div class="lbl">NEMZETKÖZI KAPCSOLATOK</div><div class="ln d s"></div><div class="ln"></div></div><div class="card" style="padding:8px"><div class="lbl">SZERKESZTŐSÉG</div><div class="ln d s"></div><div class="ln"></div></div></div></div>
+  </div></div>
+ <div class="wf m"><div class="hd"><div class="logo" style="width:56px"></div><div style="margin-left:auto;display:flex;gap:8px"><div class="ic"></div><div class="ic"></div></div></div><div class="body"><div class="ln t" style="width:40%"></div><div class="card" style="padding:8px"><div class="ln"></div><div class="ln s"></div></div><div class="card" style="padding:8px;margin-top:6px"><div class="lbl">PR ÉS MARKETING</div><div class="ln"></div></div><div class="card" style="padding:8px;margin-top:6px"><div class="lbl">SZERKESZTŐSÉG</div><div class="ln"></div></div></div></div>
+</div>
+<ol class="notes">
+ <li><b>Cégadatok és cím</b> + „Útvonal” link a térképre (külső). Nincs beágyazott térkép (sütik, sebesség).</li>
+ <li><b>Szerepkörök szerinti kártyák</b> a mostani egyetlen középre zárt szövegtömb helyett: név, telefon (kattintható <code>tel:</code>), e-mail (kattintható). <b>Spamvédelem:</b> a mostani oldal [pont]/[kukac] álcázást használ; mi az e-mail-címet csak a böngészőben rakjuk össze, így a gépi címgyűjtők a forráskódban nem látják, az ember viszont egy kattintással írhat. Nincs kapcsolatfelvételi űrlap (a mostani oldalon sincs, és koncepcióoldalon nem gyűjtünk adatot).</li>
+</ol>
+
+<h2>5. Akadálymentesség – beépítve a struktúrába</h2>
+<table>
+<tr><th>Elv</th><th>Megvalósítás</th></tr>
+<tr><td>Szöveges navigáció</td><td>Valódi szöveges menü (ma képek üres alt-tal), landmarkok (<code>header, nav, main, footer</code>), ugrólink.</td></tr>
+<tr><td>Képek</td><td>Borító alt: „Szerző: Cím – borító”. Dekoratív képeknél üres alt.</td></tr>
+<tr><td>Billentyűzet</td><td>Minden interakció kezelhető billentyűzettel; jól látható fókuszkeret (pecsétpiros, 2 px); a kereső combobox ARIA mintát követ.</td></tr>
+<tr><td>Mozgás</td><td>Nincs automatikus karusszel; a <code>prefers-reduced-motion</code> beállítást tiszteletben tartjuk.</td></tr>
+<tr><td>Olvashatóság</td><td>Min. 16 px törzsszöveg, max. kb. 70 karakteres sorhossz, 200%-os nagyításnál sem lóg ki semmi, az érintési célterületek min. 24×24 px (WCAG 2.2).</td></tr>
+<tr><td>Nyelv</td><td><code>lang="hu"</code>, magyar ábécé szerinti rendezés, helyes magyar idézőjelek.</td></tr>
+</table>
+
+<h2>6. Önellenőrzés a célokhoz</h2>
+<table>
+<tr><th>Cél</th><th>Állapot</th></tr>
+<tr><td>A 3 flow végigjárható, zsákutca nélkül</td><td>Igen a megtervezett esetekre. Kockázat: a szerző oldalán olyan mű, amelynek nincs leszedett aloldala → 2. kérdés.</td></tr>
+<tr><td>Csak valós tartalom</td><td>Igen: minden blokk a mostani oldal valamelyik adatából épül. Új elem csak összekötés (pl. sajtóvisszhang a könyvnél) és UI-szöveg.</td></tr>
+<tr><td>Standard UX-elvek</td><td>Láthatóság (mindig látható kereső, aktív menüpont), felismerés felidézés helyett (borítók, javaslatlista), hibamegelőzés (nincs 3 karakteres hiba), minimalista (ismétlődő dobozok és reklámok nélkül), következetesség (egy kártyatípus a könyvekre).</td></tr>
+<tr><td>Jelenlegi trendek</td><td>Borító-központú rács, azonnali keresés javaslatokkal, URL-ben tárolt szűrők, mobil alsó panel a szűrőknek, karusszel nélküli kiemelés.</td></tr>
+<tr><td>1 hét alatt megvalósítható</td><td>Igen: 8 sablon, statikus generálás, kliensoldali keresés.</td></tr>
+</table>
+
+<h2>7. Döntési kérdések</h2>
+<div class="q">
+<ol>
+ <li><b>A scope-on kívüli menüpontok</b> (A kiadóról, E-könyv, Hírek, Kéziratról, English): (a) <i>kihagyjuk</i> a menüből – tiszta, de a Magvető hiányolhatja; (b) a láblécben <i>a mostani oldalra linkelünk</i> (↗); (c) „hamarosan” jelöléssel szerepelnek. <b>Javaslatom: (b).</b></li>
+ <li><b>Művek aloldal nélkül:</b> a szerzők oldalán műlisták vannak (pl. Závadánál 16 mű). Ha egy műnek nincs leszedett aloldala: (a) <i>leszedjük az összes, a szerzőoldalakon szereplő mű adatlapját</i> (több adat, de nincs zsákutca; a leszedést a gép végzi, nekünk nem plusz munka); (b) a mű link nélkül, csak címmel jelenik meg. <b>Javaslatom: (a)</b>, de ez közelít a teljes katalógushoz, amit korábban nem választottál – ezért kérdezem.</li>
+ <li><b>Események:</b> a mostani naptárban már lejárt dátumok is vannak (pl. X. 27.). Csak a jövőbelieket mutassuk (a mai dátumhoz képest), vagy mindet?</li>
+ <li><b>Líra-reklámbannerek:</b> kihagyjuk (javaslatom), vagy egy visszafogott „Ajánló” helyen megtartjuk?</li>
+ <li><b>Szűrőcsoportok a Kiadványoknál:</b> a 31 kategóriát én sorolnám „Műfaj” és „Sorozat / életmű” csoportba. Rendben, hogy ezt én javaslom, és a végén te ellenőrzöd?</li>
+ <li><b>Tipográfiai igazítás</b> (az előző körből): mehet, hogy csak a formát igazítom (,, → „, hiányzó szóköz, csupa nagybetűs nevek, „Ernaux, Annie” → „Annie Ernaux” a kártyákon), a szöveget szóra pontosan megtartva?</li>
+</ol>
+</div>
+</main>
+</body>
+</html>
