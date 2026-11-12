@@ -5806,5 +5806,35 @@
   ],
   "indexShort": "(1952) szociológus, népművelő.",
   "photo": null
+ },
+ {
+  "id": "5555",
+  "name": "MARSTEIN, TRUDE",
+  "short": null,
+  "bioHtml": null,
+  "photoSrc": null,
+  "works": [
+   {
+    "bookId": "139536378",
+    "title": "Saját gyerekek"
+   }
+  ],
+  "notInIndex": true,
+  "photo": null
+ },
+ {
+  "id": "5573",
+  "name": "MÁCSAI PÁL",
+  "short": null,
+  "bioHtml": null,
+  "photoSrc": null,
+  "works": [
+   {
+    "bookId": "139537122",
+    "title": "Két kép között"
+   }
+  ],
+  "notInIndex": true,
+  "photo": null
  }
 ]
